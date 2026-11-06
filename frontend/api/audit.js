@@ -13,8 +13,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
   }
 
-  try {
-    const prompt = `You are OptiFront, an expert visual retail and storefront auditor for Syntraforge.
+  const prompt = `You are OptiFront, an expert visual retail and storefront auditor for Syntraforge.
 Analyze this storefront, display, or retail space image.
 Assess visual hierarchy, signage legibility, merchandising attractiveness, lighting, and entry clarity.
 Output strictly valid JSON with these exact keys:
@@ -25,52 +24,59 @@ Output strictly valid JSON with these exact keys:
   "actionItems": "<concise paragraph of high-impact actionable changes>"
 }`;
 
-    const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
+  const payload = {
+    contents: [
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: prompt },
-                {
-                  inlineData: {
-                    mimeType: mimeType || 'image/jpeg',
-                    data: image
-                  }
-                }
-              ]
+        parts: [
+          { text: prompt },
+          {
+            inlineData: {
+              mimeType: mimeType || 'image/jpeg',
+              data: image
             }
-          ],
-          generationConfig: {
-            responseMimeType: 'application/json'
           }
-        })
+        ]
       }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || JSON.stringify(data));
+    ],
+    generationConfig: {
+      responseMimeType: 'application/json'
     }
+  };
 
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!rawText) {
-      throw new Error('No analysis content returned from Gemini.');
+  const models = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-flash-latest'];
+
+  for (const model of models) {
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 503 || response.status === 429) {
+          continue; // Try next model on load spike
+        }
+        throw new Error(data.error?.message || JSON.stringify(data));
+      }
+
+      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) continue;
+
+      const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+      return res.status(200).json(JSON.parse(cleanText));
+    } catch (err) {
+      if (model === models[models.length - 1]) {
+        return res.status(500).json({ error: 'Audit failed: ' + (err.message || 'Server busy, please retry') });
+      }
     }
-
-    const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-    const parsed = JSON.parse(cleanText);
-
-    return res.status(200).json(parsed);
-  } catch (err) {
-    console.error('Audit Error:', err);
-    return res.status(500).json({ error: 'Audit failed: ' + (err.message || 'Unknown error') });
   }
 }
