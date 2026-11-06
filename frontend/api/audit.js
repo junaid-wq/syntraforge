@@ -13,9 +13,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
   }
 
-  const prompt = `You are OptiFront, an expert visual retail and storefront auditor for Syntraforge.
-Analyze this storefront, display, or retail space image.
-Assess visual hierarchy, signage legibility, merchandising attractiveness, lighting, and entry clarity.
+  const prompt = `You are OptiFront, an expert visual retail storefront auditor for Syntraforge.
+Analyze this retail display or storefront photo.
+Assess visual hierarchy, signage legibility, merchandising attractiveness, lighting, and layout.
 Output strictly valid JSON with these exact keys:
 {
   "score": <integer from 0 to 100>,
@@ -43,40 +43,47 @@ Output strictly valid JSON with these exact keys:
     }
   };
 
-  const models = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-flash-latest'];
+  const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
 
-  for (const model of models) {
+  // Retry up to 3 times on 503 / 429 demand spikes
+  for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify(payload)
-        }
-      );
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
+        body: JSON.stringify(payload)
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        if (response.status === 503 || response.status === 429) {
-          continue; // Try next model on load spike
+        if ((response.status === 503 || response.status === 429) && attempt < 3) {
+          // Wait 1.5s then retry
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          continue;
         }
-        throw new Error(data.error?.message || JSON.stringify(data));
+        return res.status(response.status).json({
+          error: data.error?.message || 'Gemini API temporary error. Please try again.'
+        });
       }
 
       const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!rawText) continue;
+      if (!rawText) {
+        return res.status(500).json({ error: 'Empty evaluation response from model.' });
+      }
 
       const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
       return res.status(200).json(JSON.parse(cleanText));
     } catch (err) {
-      if (model === models[models.length - 1]) {
-        return res.status(500).json({ error: 'Audit failed: ' + (err.message || 'Server busy, please retry') });
+      if (attempt === 3) {
+        return res.status(500).json({ error: err.message || 'Audit request failed.' });
       }
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
+
+  return res.status(500).json({ error: 'Audit timed out. Please try again.' });
 }
