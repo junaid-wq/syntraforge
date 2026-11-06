@@ -1,7 +1,3 @@
-const BACKEND_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:5000' 
-  : 'https://syntraforge.me'; // or your backend service URL
-
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('fileInput');
 const previewContainer = document.getElementById('previewContainer');
@@ -13,15 +9,12 @@ const results = document.getElementById('results');
 
 let selectedFile = null;
 
-// Trigger file picker
 dropzone.addEventListener('click', () => fileInput.click());
 
-// File change handler
 fileInput.addEventListener('change', (e) => {
   if (e.target.files.length) handleFile(e.target.files[0]);
 });
 
-// Drag and drop handlers
 dropzone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropzone.classList.add('border-cyan-500');
@@ -58,18 +51,22 @@ removeBtn.addEventListener('click', () => {
 });
 
 analyzeBtn.addEventListener('click', async () => {
-  if (!selectedFile) return;
+  if (!selectedFile || !imagePreview.src) return;
 
-  const formData = new FormData();
-  formData.append('storefront', selectedFile);
+  // Extract pure base64 data without data-URL header
+  const base64Data = imagePreview.src.split(',')[1];
 
   previewContainer.classList.add('hidden');
   loadingState.classList.remove('hidden');
 
   try {
-    const res = await fetch(`${BACKEND_URL}/api/audit`, {
+    const res = await fetch('/api/audit', {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        image: base64Data,
+        mimeType: selectedFile.type
+      })
     });
 
     const data = await res.json();
@@ -82,7 +79,7 @@ analyzeBtn.addEventListener('click', async () => {
   } catch (err) {
     loadingState.classList.add('hidden');
     previewContainer.classList.remove('hidden');
-    alert(`Error running audit: ${err.message}`);
+    alert(`Audit Error: ${err.message}`);
   }
 });
 
@@ -107,18 +104,5 @@ function renderResults(report) {
 
   document.getElementById('actionItems').textContent = report.actionItems || 'No direct action items generated.';
   results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth' });
 }
-
-// Stripe Checkout Handler
-document.getElementById('stripeCheckoutBtn')?.addEventListener('click', async () => {
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/create-checkout-session`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
-  } catch (err) {
-    alert('Unable to initialize Stripe session: ' + err.message);
-  }
-});
