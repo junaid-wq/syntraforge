@@ -26,10 +26,13 @@ Output strictly valid JSON with these exact keys:
 }`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
         body: JSON.stringify({
           contents: [
             {
@@ -59,7 +62,7 @@ Output strictly valid JSON with these exact keys:
 
     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
-      throw new Error('No analysis text returned from Gemini.');
+      throw new Error('No analysis content returned from Gemini.');
     }
 
     const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
