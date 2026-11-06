@@ -43,47 +43,54 @@ Output strictly valid JSON with these exact keys:
     }
   };
 
-  const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
+  // Dedicated endpoints ordered by vision quality; avoids the congested flash-latest alias
+  const candidateModels = [
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash-8b',
+    'gemini-flash-latest'
+  ];
 
-  // Retry up to 3 times on 503 / 429 demand spikes
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  for (const model of candidateModels) {
     try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey
-        },
-        body: JSON.stringify(payload)
-      });
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
+          },
+          body: JSON.stringify(payload)
+        }
+      );
 
       const data = await response.json();
 
+      // If this specific model pool is overloaded, failover immediately to the next candidate
+      if (response.status === 503 || response.status === 429) {
+        console.warn(`Model ${model} overloaded (HTTP ${response.status}). Trying next model...`);
+        continue;
+      }
+
       if (!response.ok) {
-        if ((response.status === 503 || response.status === 429) && attempt < 3) {
-          // Wait 1.5s then retry
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          continue;
-        }
-        return res.status(response.status).json({
-          error: data.error?.message || 'Gemini API temporary error. Please try again.'
-        });
+        // Skip deprecated/unsupported models and try next
+        if (response.status === 404) continue;
+        throw new Error(data.error?.message || `API error ${response.status}`);
       }
 
       const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!rawText) {
-        return res.status(500).json({ error: 'Empty evaluation response from model.' });
-      }
+      if (!rawText) continue;
 
       const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
       return res.status(200).json(JSON.parse(cleanText));
     } catch (err) {
-      if (attempt === 3) {
-        return res.status(500).json({ error: err.message || 'Audit request failed.' });
+      console.warn(`Model ${model} execution error:`, err.message);
+      if (model === candidateModels[candidateModels.length - 1]) {
+        return res.status(500).json({ error: 'Audit failed: ' + (err.message || 'All inference models busy.') });
       }
-      await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
 
-  return res.status(500).json({ error: 'Audit timed out. Please try again.' });
+  return res.status(503).json({ error: 'All Gemini model pools are temporarily busy. Please retry shortly.' });
 }
