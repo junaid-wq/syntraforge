@@ -1,7 +1,3 @@
-import { GoogleGenAI } from '@google/genai';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -10,6 +6,11 @@ export default async function handler(req, res) {
   const { image, mimeType } = req.body;
   if (!image) {
     return res.status(400).json({ error: 'Please upload an image to audit.' });
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
   }
 
   try {
@@ -24,23 +25,46 @@ Output strictly valid JSON with these exact keys:
   "actionItems": "<concise paragraph of high-impact actionable changes>"
 }`;
 
-    const response = await ai.models.generateContent({
-     model: 'gemini-1.5-flash',
-      contents: [
-        prompt,
-        {
-          inlineData: {
-            data: image,
-            mimeType: mimeType || 'image/jpeg'
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: prompt },
+                {
+                  inlineData: {
+                    mimeType: mimeType || 'image/jpeg',
+                    data: image
+                  }
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            responseMimeType: 'application/json'
           }
-        }
-      ],
-      config: {
-        responseMimeType: 'application/json'
+        })
       }
-    });
+    );
 
-    const parsed = JSON.parse(response.text);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || JSON.stringify(data));
+    }
+
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!rawText) {
+      throw new Error('No analysis text returned from Gemini.');
+    }
+
+    const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    const parsed = JSON.parse(cleanText);
+
     return res.status(200).json(parsed);
   } catch (err) {
     console.error('Audit Error:', err);
