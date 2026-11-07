@@ -8,10 +8,25 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is not configured' });
   }
 
-  const { imageBase64, mimeType } = req.body || {};
-  if (!imageBase64) {
-    return res.status(400).json({ error: 'Missing image data' });
+  // Support JSON bodies with different common key names
+  let imageBase64 = req.body?.imageBase64 || req.body?.image || req.body?.data || req.body?.file;
+  let mimeType = req.body?.mimeType || 'image/jpeg';
+
+  // If the client sent a raw string
+  if (typeof req.body === 'string') {
+    try {
+      const parsed = JSON.parse(req.body);
+      imageBase64 = parsed.imageBase64 || parsed.image || parsed.data || parsed.file;
+      mimeType = parsed.mimeType || mimeType;
+    } catch {}
   }
+
+  if (!imageBase64) {
+    return res.status(400).json({ error: 'Missing image data. Please select or re-upload an image.' });
+  }
+
+  // Strip data URL prefixes if present
+  const base64Clean = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
   // Fallback pool: Flash -> Flash-8B -> Pro
   const MODEL_POOL = [
@@ -36,8 +51,8 @@ Return pure JSON with no markdown wrapping matching this exact schema:
           },
           {
             inline_data: {
-              mime_type: mimeType || 'image/jpeg',
-              data: imageBase64.replace(/^data:image\/\w+;base64,/, '')
+              mime_type: mimeType,
+              data: base64Clean
             }
           }
         ]
@@ -64,13 +79,12 @@ Return pure JSON with no markdown wrapping matching this exact schema:
         body: JSON.stringify(payload)
       });
 
-      // 1. Read as plain text first so non-JSON error pages don't trigger syntax crashes
       const rawResponseText = await response.text();
 
       if (!response.ok) {
         lastError = `HTTP ${response.status}: ${rawResponseText.slice(0, 150)}`;
         console.warn(`Model ${model} failed (${response.status}):`, lastError);
-        continue; // Cascade to the next model
+        continue;
       }
 
       let data;
@@ -87,7 +101,6 @@ Return pure JSON with no markdown wrapping matching this exact schema:
         continue;
       }
 
-      // 2. Extract valid JSON block even if markdown fences or trailing spaces exist
       const jsonMatch = rawText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         lastError = `Model ${model} produced no JSON block in response text`;
@@ -96,7 +109,6 @@ Return pure JSON with no markdown wrapping matching this exact schema:
 
       const parsedReport = JSON.parse(jsonMatch[0]);
 
-      // Successfully processed
       return res.status(200).json({
         ...parsedReport,
         engineUsed: model
@@ -108,7 +120,6 @@ Return pure JSON with no markdown wrapping matching this exact schema:
     }
   }
 
-  // All models in the pool failed
   return res.status(503).json({
     error: `Audit service busy: ${lastError || 'Please try again in a few moments'}`
   });
