@@ -1,7 +1,7 @@
 // frontend/api/audit.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const DEFAULT_MODELS = ["gemini-3.8-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+const DEFAULT_MODELS = ["gemini-3.8-flash", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-1.5-flash"];
 
 const MODELS = process.env.GEMINI_MODELS
   ? process.env.GEMINI_MODELS.split(",").map((m) => m.trim()).filter(Boolean)
