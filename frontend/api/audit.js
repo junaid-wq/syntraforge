@@ -1,84 +1,128 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+// frontend/api/audit.js
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'API key missing' });
-  
-  try {
-    let imageBase64 = req.body?.imageBase64 || req.body?.image || req.body?.data;
-    if (typeof req.body === 'string') {
-      try {
-        const parsed = JSON.parse(req.body);
-        imageBase64 = parsed.imageBase64 || parsed.image || parsed.data;
-      } catch (e) {}
+const DEFAULT_MODELS = ["gemini-3.8-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+
+const MODELS = process.env.GEMINI_MODELS
+  ? process.env.GEMINI_MODELS.split(",").map((m) => m.trim()).filter(Boolean)
+  : DEFAULT_MODELS;
+
+const PROMPT = `You are a visual design auditor. Analyze the attached image and respond ONLY with JSON matching this schema:
+{
+  "score": number (0-100),
+  "strengths": string[],
+  "improvements": string[],
+  "actionItems": string
+}
+Be specific and concrete. "actionItems" is a single string summarizing the prioritized next steps.`;
+
+// ---------- Helpers ----------
+
+function parseBody(body) {
+  let parsed = body;
+  // Body may be a string, possibly double-stringified
+  for (let i = 0; i < 2 && typeof parsed === "string"; i++) {
+    try {
+      parsed = JSON.parse(parsed);
+    } catch {
+      break; // not JSON; treat as raw string payload
     }
-    
-    if (!imageBase64) return res.status(400).json({ error: 'Missing image data.' });
-    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
-
-    const payload = {
-      contents: [{
-        parts: [
-          { text: "Analyze this storefront. Return pure JSON with: score (number), strengths (array of strings), improvements (array of strings), actionItems (string)." },
-          { inlineData: { mimeType: "image/jpeg", data: base64Data } }
-        ]
-      }],
-      generationConfig: { responseMimeType: "application/json" }
-    };
-
-    // EXPLICIT VERSIONS ONLY. No shorthand aliases.
-    const MODEL_POOL = [
-      'gemini-1.5-flash-002',
-      'gemini-1.5-flash-001',
-      'gemini-1.5-pro-002',
-      'gemini-1.5-pro-001'
-    ];
-
-    let errorLog = [];
-
-    for (const model of MODEL_POOL) {
-      try {
-        // UPGRADED to the stable 'v1' API instead of 'v1beta'
-        const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
-        
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const rawText = await response.text();
-        
-        if (!response.ok) {
-          errorLog.push(`${model} HTTP ${response.status}`);
-          continue; 
-        }
-
-        const data = JSON.parse(rawText);
-        const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!textContent) continue;
-        
-        const jsonMatch = textContent.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) continue;
-        
-        const parsedReport = JSON.parse(jsonMatch[0]);
-
-        return res.status(200).json({
-          score: parsedReport.score || 80,
-          strengths: parsedReport.strengths || ["Clean presentation"],
-          improvements: parsedReport.improvements || ["Consider lighting adjustments"],
-          actionItems: parsedReport.actionItems || parsedReport.action_items || "Review visual hierarchy.",
-          engineUsed: model
-        });
-
-      } catch (modelErr) {
-        errorLog.push(`${model} crash`);
-      }
-    }
-
-    return res.status(503).json({ error: `All models failed: ${errorLog.join(', ')}` });
-
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
   }
+  return parsed;
+}
+
+function extractImage(body) {
+  const parsed = parseBody(body);
+  let raw;
+
+  if (typeof parsed === "string") {
+    raw = parsed; // raw base64 or data URI sent as the body
+  } else if (parsed && typeof parsed === "object") {
+    raw = parsed.imageBase64 ?? parsed.image ?? parsed.data;
+  }
+
+  if (typeof raw !== "string" || !raw.trim()) return null;
+
+  let mimeType = "image/jpeg";
+  const match = raw.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,/);
+  if (match) mimeType = match[1];
+
+  const data = raw
+    .replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/, "")
+    .replace(/\s/g, "");
+
+  return data ? { data, mimeType } : null;
+}
+
+function parseModelJson(text) {
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error("No JSON object found in model response");
+  const obj = JSON.parse(match[0]);
+
+  return {
+    score: Number.isFinite(Number(obj.score)) ? Number(obj.score) : 0,
+    strengths: Array.isArray(obj.strengths) ? obj.strengths.map(String) : [],
+    improvements: Array.isArray(obj.improvements) ? obj.improvements.map(String) : [],
+    actionItems: Array.isArray(obj.actionItems)
+      ? obj.actionItems.join("\n")
+      : String(obj.actionItems ?? ""),
+  };
+}
+
+// ---------- Handler ----------
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  if (!process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: "GEMINI_API_KEY is not set" });
+  }
+
+  const image = extractImage(req.body);
+  if (!image) {
+    return res.status(400).json({
+      error: "No image found. Send JSON with one of: imageBase64, image, data.",
+    });
+  }
+
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  const failures = [];
+
+  for (const modelName of MODELS) {
+    try {
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: {
+          responseMimeType: "application/json",
+          temperature: 0.4,
+        },
+      });
+
+      const result = await model.generateContent([
+        PROMPT,
+        { inlineData: { data: image.data, mimeType: image.mimeType } },
+      ]);
+
+      const text = result.response.text();
+      const audit = parseModelJson(text);
+
+      return res.status(200).json({ ...audit, model: modelName });
+    } catch (err) {
+      const failure = {
+        model: modelName,
+        status: err?.status ?? err?.statusCode ?? null,
+        message: err?.message ?? String(err),
+      };
+      failures.push(failure);
+      console.error(`[audit] ${modelName} failed:`, failure);
+    }
+  }
+
+  return res.status(503).json({
+    error: "All models failed",
+    failures,
+  });
 }
