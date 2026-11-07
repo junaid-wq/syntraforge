@@ -17,28 +17,25 @@ export default async function handler(req, res) {
     if (!imageBase64) return res.status(400).json({ error: 'Missing image data.' });
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
-    // 2. Strict JSON Payload
+    // 2. Strict camelCase JSON Payload for Google REST API
     const payload = {
       contents: [{
         parts: [
           { text: "Analyze this storefront. Return pure JSON with: score (number), strengths (array of strings), improvements (array of strings), actionItems (string)." },
-          { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+          { inlineData: { mimeType: "image/jpeg", data: base64Data } }
         ]
       }],
-      generationConfig: { response_mime_type: "application/json" }
+      generationConfig: { responseMimeType: "application/json" }
     };
 
-    // 3. Self-Healing Model Pool
-    // The server will try these from top to bottom. If any model 404s or 503s, it auto-switches to the next.
+    // 3. Stable Model Pool
     const MODEL_POOL = [
-      'gemini-2.5-flash',
-      'gemini-2.0-flash',
-      'gemini-1.5-flash-latest',
       'gemini-1.5-flash',
-      'gemini-1.5-pro'
+      'gemini-1.5-flash-8b',
+      'gemini-1.5-pro-latest'
     ];
 
-    let lastError = "All AI models are currently unavailable.";
+    let errorLog = [];
 
     for (const model of MODEL_POOL) {
       try {
@@ -52,10 +49,8 @@ export default async function handler(req, res) {
 
         const rawText = await response.text();
         
-        // If the model name is wrong (404) or busy (429/503), skip to the next model
         if (!response.ok) {
-          lastError = `Model ${model} failed: ${rawText.slice(0, 100)}`;
-          console.warn(lastError);
+          errorLog.push(`${model} HTTP ${response.status}: ${rawText.slice(0, 100)}`);
           continue; 
         }
 
@@ -80,14 +75,12 @@ export default async function handler(req, res) {
         });
 
       } catch (modelErr) {
-        lastError = `Model ${model} exception: ${modelErr.message}`;
-        console.warn(lastError);
-        // Continue to the next model in the loop
+        errorLog.push(`${model} exception: ${modelErr.message}`);
       }
     }
 
-    // If it reaches this point, every model in the array failed
-    return res.status(503).json({ error: lastError });
+    // If it reaches this point, every model failed. We return the FULL log so we know exactly why.
+    return res.status(503).json({ error: `All models failed. Log: ${errorLog.join(' | ')}` });
 
   } catch (error) {
     return res.status(500).json({ error: error.message });
