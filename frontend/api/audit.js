@@ -5,7 +5,6 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'API key missing' });
   
   try {
-    // 1. Universal Image Extraction
     let imageBase64 = req.body?.imageBase64 || req.body?.image || req.body?.data;
     if (typeof req.body === 'string') {
       try {
@@ -17,7 +16,6 @@ export default async function handler(req, res) {
     if (!imageBase64) return res.status(400).json({ error: 'Missing image data.' });
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
-    // 2. Strict camelCase JSON Payload for Google REST API
     const payload = {
       contents: [{
         parts: [
@@ -28,18 +26,20 @@ export default async function handler(req, res) {
       generationConfig: { responseMimeType: "application/json" }
     };
 
-    // 3. Stable Model Pool
+    // EXPLICIT VERSIONS ONLY. No shorthand aliases.
     const MODEL_POOL = [
-      'gemini-1.5-flash',
-      'gemini-1.5-flash-8b',
-      'gemini-1.5-pro-latest'
+      'gemini-1.5-flash-002',
+      'gemini-1.5-flash-001',
+      'gemini-1.5-pro-002',
+      'gemini-1.5-pro-001'
     ];
 
     let errorLog = [];
 
     for (const model of MODEL_POOL) {
       try {
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        // UPGRADED to the stable 'v1' API instead of 'v1beta'
+        const endpoint = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
         
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -50,14 +50,12 @@ export default async function handler(req, res) {
         const rawText = await response.text();
         
         if (!response.ok) {
-          errorLog.push(`${model} HTTP ${response.status}: ${rawText.slice(0, 100)}`);
+          errorLog.push(`${model} HTTP ${response.status}`);
           continue; 
         }
 
-        // 4. Safe JSON Parse
         const data = JSON.parse(rawText);
         const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        
         if (!textContent) continue;
         
         const jsonMatch = textContent.match(/\{[\s\S]*\}/);
@@ -65,7 +63,6 @@ export default async function handler(req, res) {
         
         const parsedReport = JSON.parse(jsonMatch[0]);
 
-        // 5. Success! Return the payload immediately.
         return res.status(200).json({
           score: parsedReport.score || 80,
           strengths: parsedReport.strengths || ["Clean presentation"],
@@ -75,12 +72,11 @@ export default async function handler(req, res) {
         });
 
       } catch (modelErr) {
-        errorLog.push(`${model} exception: ${modelErr.message}`);
+        errorLog.push(`${model} crash`);
       }
     }
 
-    // If it reaches this point, every model failed. We return the FULL log so we know exactly why.
-    return res.status(503).json({ error: `All models failed. Log: ${errorLog.join(' | ')}` });
+    return res.status(503).json({ error: `All models failed: ${errorLog.join(', ')}` });
 
   } catch (error) {
     return res.status(500).json({ error: error.message });
