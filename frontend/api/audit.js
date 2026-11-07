@@ -3,89 +3,113 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { image, mimeType } = req.body;
-  if (!image) {
-    return res.status(400).json({ error: 'Please upload an image to audit.' });
-  }
-
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
+    return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is not configured' });
   }
 
-  const prompt = `You are OptiFront, an expert visual retail storefront auditor for Syntraforge.
-Analyze this retail display or storefront photo.
-Assess visual hierarchy, signage legibility, merchandising attractiveness, lighting, and entry clarity.
-Output strictly valid JSON matching this exact structure:
-{
-  "score": 85,
-  "strengths": ["Clear signage", "Organized layout", "Good lighting"],
-  "improvements": ["High window glare", "Cluttered focal point", "Dim accent lamps"],
-  "actionItems": "Reorganize the front display and adjust spotlighting to enhance street appeal."
-}`;
+  const { imageBase64, mimeType } = req.body || {};
+  if (!imageBase64) {
+    return res.status(400).json({ error: 'Missing image data' });
+  }
+
+  // Fallback pool: Flash -> Flash-8B -> Pro
+  const MODEL_POOL = [
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-8b',
+    'gemini-1.5-pro'
+  ];
 
   const payload = {
     contents: [
       {
         parts: [
-          { text: prompt },
           {
-            inlineData: {
-              mimeType: mimeType || 'image/jpeg',
-              data: image
+            text: `You are an expert visual merchandising auditor. Analyze this retail display/storefront image.
+Return pure JSON with no markdown wrapping matching this exact schema:
+{
+  "score": 85,
+  "strengths": ["Clear lighting", "Good spacing"],
+  "improvements": ["Needs higher signage"],
+  "actionItems": "Add bold top-level signage to draw foot traffic."
+}`
+          },
+          {
+            inline_data: {
+              mime_type: mimeType || 'image/jpeg',
+              data: imageBase64.replace(/^data:image\/\w+;base64,/, '')
             }
           }
         ]
       }
     ],
     generationConfig: {
-      responseMimeType: 'application/json'
+      response_mime_type: 'application/json',
+      temperature: 0.2
     }
   };
 
-  // Supported models for modern AI Studio keys, ordered by speed and capacity
-  const targetModels = [
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
-    'gemini-flash-latest'
-  ];
-
   let lastError = null;
 
-  for (const model of targetModels) {
+  for (const model of MODEL_POOL) {
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify(payload)
-        }
-      );
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
-      const data = await response.json();
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // 1. Read as plain text first so non-JSON error pages don't trigger syntax crashes
+      const rawResponseText = await response.text();
 
       if (!response.ok) {
-        lastError = data.error?.message || `HTTP ${response.status}`;
+        lastError = `HTTP ${response.status}: ${rawResponseText.slice(0, 150)}`;
         console.warn(`Model ${model} failed (${response.status}):`, lastError);
-        continue; // Try next model pool
+        continue; // Cascade to the next model
       }
 
-      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!rawText) continue;
+      let data;
+      try {
+        data = JSON.parse(rawResponseText);
+      } catch (parseErr) {
+        console.warn(`Model ${model} returned invalid JSON wrapper:`, parseErr.message);
+        continue;
+      }
 
-      const cleanText = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-      return res.status(200).json(JSON.parse(cleanText));
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) {
+        lastError = `Model ${model} returned empty content`;
+        continue;
+      }
+
+      // 2. Extract valid JSON block even if markdown fences or trailing spaces exist
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        lastError = `Model ${model} produced no JSON block in response text`;
+        continue;
+      }
+
+      const parsedReport = JSON.parse(jsonMatch[0]);
+
+      // Successfully processed
+      return res.status(200).json({
+        ...parsedReport,
+        engineUsed: model
+      });
+
     } catch (err) {
       lastError = err.message;
-      console.warn(`Model ${model} fetch error:`, err);
+      console.warn(`Model ${model} fetch exception:`, err);
     }
   }
 
+  // All models in the pool failed
   return res.status(503).json({
-    error: `Audit service busy: ${lastError || 'Please try again in a few moments.'}`
+    error: `Audit service busy: ${lastError || 'Please try again in a few moments'}`
   });
 }
