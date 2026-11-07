@@ -26,8 +26,8 @@ export default async function handler(req, res) {
       generationConfig: { response_mime_type: "application/json" }
     };
 
-    // 3. Single Stable Model Endpoint (Flash)
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // 3. Fixed Endpoint with -latest suffix added here
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
     
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       strengths: parsedReport.strengths || ["Clean presentation"],
       improvements: parsedReport.improvements || ["Consider lighting adjustments"],
       actionItems: parsedReport.actionItems || parsedReport.action_items || "Review visual hierarchy.",
-      engineUsed: "gemini-1.5-flash"
+      engineUsed: "gemini-1.5-flash-latest"
     });
 
   } catch (error) {
