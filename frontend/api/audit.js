@@ -8,11 +8,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is not configured' });
   }
 
-  // Support JSON bodies with different common key names
+  // 1. Universal image payload extraction (supports json, stringified json, raw data)
   let imageBase64 = req.body?.imageBase64 || req.body?.image || req.body?.data || req.body?.file;
   let mimeType = req.body?.mimeType || 'image/jpeg';
 
-  // If the client sent a raw string
   if (typeof req.body === 'string') {
     try {
       const parsed = JSON.parse(req.body);
@@ -22,17 +21,19 @@ export default async function handler(req, res) {
   }
 
   if (!imageBase64) {
-    return res.status(400).json({ error: 'Missing image data. Please select or re-upload an image.' });
+    return res.status(400).json({ error: 'Missing image data. Please select or upload an image.' });
   }
 
-  // Strip data URL prefixes if present
-  const base64Clean = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+  // Clean base64 header if present
+  const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
-  // Fallback pool: Flash -> Flash-8B -> Pro
+  // 2. Exact v1beta supported REST model identifiers
   const MODEL_POOL = [
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-flash-8b-latest',
+    'gemini-1.5-pro-latest',
     'gemini-1.5-flash',
-    'gemini-1.5-flash-8b',
-    'gemini-1.5-pro'
+    'gemini-2.0-flash'
   ];
 
   const payload = {
@@ -40,19 +41,19 @@ export default async function handler(req, res) {
       {
         parts: [
           {
-            text: `You are an expert visual merchandising auditor. Analyze this retail display/storefront image.
-Return pure JSON with no markdown wrapping matching this exact schema:
+            text: `You are an expert visual merchandising auditor. Analyze this storefront or display image.
+Return valid JSON matching this schema exactly:
 {
-  "score": 85,
-  "strengths": ["Clear lighting", "Good spacing"],
-  "improvements": ["Needs higher signage"],
-  "actionItems": "Add bold top-level signage to draw foot traffic."
+  "score": 82,
+  "strengths": ["Clean display", "Uniform spacing"],
+  "improvements": ["Needs prominent signage", "Increase lighting"],
+  "actionItems": "Introduce eye-catching category signage above the racks."
 }`
           },
           {
             inline_data: {
               mime_type: mimeType,
-              data: base64Clean
+              data: base64Data
             }
           }
         ]
@@ -82,8 +83,8 @@ Return pure JSON with no markdown wrapping matching this exact schema:
       const rawResponseText = await response.text();
 
       if (!response.ok) {
-        lastError = `HTTP ${response.status}: ${rawResponseText.slice(0, 150)}`;
-        console.warn(`Model ${model} failed (${response.status}):`, lastError);
+        lastError = `Model ${model} returned HTTP ${response.status}: ${rawResponseText.slice(0, 120)}`;
+        console.warn(lastError);
         continue;
       }
 
@@ -91,26 +92,31 @@ Return pure JSON with no markdown wrapping matching this exact schema:
       try {
         data = JSON.parse(rawResponseText);
       } catch (parseErr) {
-        console.warn(`Model ${model} returned invalid JSON wrapper:`, parseErr.message);
+        console.warn(`Model ${model} JSON parse failed:`, parseErr.message);
         continue;
       }
 
       const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!rawText) {
-        lastError = `Model ${model} returned empty content`;
+        lastError = `Model ${model} produced no text candidates`;
         continue;
       }
 
+      // Robust JSON extraction (handles markdown wraps or raw string objects)
       const jsonMatch = rawText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        lastError = `Model ${model} produced no JSON block in response text`;
+        lastError = `Model ${model} produced no JSON object structure`;
         continue;
       }
 
       const parsedReport = JSON.parse(jsonMatch[0]);
 
+      // Normalize keys so the UI can always render the report cards
       return res.status(200).json({
-        ...parsedReport,
+        score: parsedReport.score || 80,
+        strengths: parsedReport.strengths || [],
+        improvements: parsedReport.improvements || [],
+        actionItems: parsedReport.actionItems || parsedReport.action_items || '',
         engineUsed: model
       });
 
@@ -121,6 +127,6 @@ Return pure JSON with no markdown wrapping matching this exact schema:
   }
 
   return res.status(503).json({
-    error: `Audit service busy: ${lastError || 'Please try again in a few moments'}`
+    error: `Audit service busy: ${lastError || 'All models unavailable, please retry shortly'}`
   });
 }
