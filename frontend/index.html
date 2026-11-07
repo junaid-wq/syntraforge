@@ -3,152 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Syntraforge | OptiFront Visual Storefront Intelligence</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>SyntraForge | Viral Hook Generator</title>
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.4); }
+    :root {
+      --bg-color: #050505;
+      --card-bg: #111111;
+      --border-color: #222222;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #3b82f6;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    input {
+      flex: 1;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      background-color: var(--text-main);
+      color: var(--bg-color);
+      border: none;
+      padding: 0 1.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #results {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .hook-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hook-text {
+      font-size: 1rem;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    .copy-btn:hover {
+      background: var(--border-color);
+      color: var(--text-main);
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen antialiased flex flex-col justify-between">
+<body>
 
-  <!-- Navbar -->
-  <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg">S</div>
-        <span class="text-xl font-bold tracking-tight text-white">Syntraforge</span>
-        <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800/60 px-2 py-0.5 rounded-full font-medium ml-1">OptiFront AI</span>
-      </div>
-      <nav class="flex items-center gap-6">
-        <a href="#audit" class="text-sm text-slate-400 hover:text-white transition">Auditor</a>
-        <a href="#pricing" class="text-sm text-slate-400 hover:text-white transition">Pricing</a>
-        <a href="https://github.com/junaid-wq/syntraforge" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-md text-slate-300 font-medium transition">GitHub</a>
-      </nav>
-    </div>
-  </header>
+  <div class="container">
+    <header>
+      <h1>Viral Hook Generator</h1>
+      <p>Type your niche. Get proven hooks that hold retention.</p>
+    </header>
 
-  <!-- Hero Section -->
-  <main class="max-w-5xl mx-auto px-6 pt-16 pb-20">
-    <div class="text-center space-y-4 max-w-2xl mx-auto">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-700/50 text-cyan-400 text-xs font-semibold">
-        <span>⚡ Vision Intelligence for Retail & E-commerce</span>
-      </div>
-      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-        Instant AI Storefront <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400">Visual Audits</span>
-      </h1>
-      <p class="text-slate-400 text-base sm:text-lg">
-        Upload or capture a photo of your storefront, display, or product layout. OptiFront grades merchandising appeal, visual hierarchy, and customer attraction in seconds.
-      </p>
+    <div class="input-group">
+      <input type="text" id="topicInput" placeholder="e.g. video editing, day trading, fitness..." autocomplete="off">
+      <button onclick="generateHooks()">Generate</button>
     </div>
 
-    <!-- Audit Tool Card -->
-    <section id="audit" class="mt-12 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-      <div class="absolute -top-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div id="results">
+      <!-- Generated hooks will appear here -->
+    </div>
+  </div>
 
-      <!-- Upload Dropzone -->
-      <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-cyan-500/70 rounded-xl p-8 sm:p-12 text-center transition cursor-pointer bg-slate-950/40">
-        <input type="file" id="fileInput" accept="image/*" class="hidden">
-        <div class="flex flex-col items-center justify-center space-y-3">
-          <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          </div>
-          <div class="space-y-1">
-            <p class="text-base font-semibold text-slate-200">Click to upload or drag & drop</p>
-            <p class="text-xs text-slate-500">JPG, PNG, WebP up to 5MB</p>
-          </div>
-        </div>
-      </div>
+  <script>
+    const templates = [
+      "The dark truth about {topic} they don't want you to know 🤫",
+      "Stop doing {topic} like this (it's ruining your progress) 🛑",
+      "I spent 100 hours researching {topic} so you don't have to 🧠",
+      "Why 99% of people fail at {topic} (and how to be the 1%) 📈",
+      "The ultimate cheat sheet for {topic} in 2026 📝",
+      "3 {topic} secrets your competitors are hiding from you 🕵️",
+      "If you want to master {topic}, you need to watch this right now ⏰",
+      "How to actually get good at {topic} without burning out 🔥",
+      "This one simple {topic} trick changed my life 🤯",
+      "Nobody is talking about this {topic} strategy... 🗣️"
+    ];
 
-      <!-- Preview & Analyze Actions -->
-      <div id="previewContainer" class="hidden mt-6 space-y-4">
-        <div class="relative rounded-xl overflow-hidden max-h-80 flex items-center justify-center bg-black/60 border border-slate-800">
-          <img id="imagePreview" src="" alt="Preview" class="max-h-80 object-contain">
-          <button id="removeBtn" class="absolute top-3 right-3 bg-slate-900/80 hover:bg-red-950/80 text-slate-300 hover:text-red-400 p-2 rounded-lg text-xs transition border border-slate-700">Remove</button>
-        </div>
-        <button id="analyzeBtn" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 font-bold text-white shadow-lg glow-cyan transition">
-          Run OptiFront Visual Audit
-        </button>
-      </div>
+    function generateHooks() {
+      const input = document.getElementById('topicInput').value.trim();
+      const resultsContainer = document.getElementById('results');
+      
+      if (!input) {
+        alert("Please enter a topic first.");
+        return;
+      }
 
-      <!-- Loading State -->
-      <div id="loadingState" class="hidden mt-8 text-center space-y-3 py-6">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-700 border-t-cyan-400"></div>
-        <p class="text-sm text-cyan-300 font-medium">Scanning layout, merchandising hierarchy & visual appeal...</p>
-      </div>
+      // Clear previous
+      resultsContainer.innerHTML = '';
 
-      <!-- Results Display -->
-      <div id="results" class="hidden mt-8 border-t border-slate-800 pt-8 space-y-6">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h3 class="text-xl font-bold text-white">Audit Report</h3>
-            <p class="text-xs text-slate-400">Evaluated by Syntraforge Gemini Vision Engine</p>
-          </div>
-          <div class="flex items-center gap-3 bg-slate-950 px-5 py-2.5 rounded-xl border border-slate-800">
-            <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Overall Score</span>
-            <span id="scoreBadge" class="text-2xl font-black text-cyan-400">--/100</span>
-          </div>
-        </div>
+      // Shuffle and pick 5 templates
+      const shuffled = [...templates].sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, 5);
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-950/70 p-5 rounded-xl border border-slate-800/80">
-            <h4 class="text-sm font-semibold text-emerald-400 mb-2 flex items-center gap-1.5">
-              <span>✓</span> Strengths
-            </h4>
-            <ul id="strengthsList" class="text-xs text-slate-300 space-y-1.5 list-disc pl-4"></ul>
-          </div>
-          <div class="bg-slate-950/70 p-5 rounded-xl border border-slate-800/80">
-            <h4 class="text-sm font-semibold text-amber-400 mb-2 flex items-center gap-1.5">
-              <span>⚠</span> Opportunities to Improve
-            </h4>
-            <ul id="improvementsList" class="text-xs text-slate-300 space-y-1.5 list-disc pl-4"></ul>
-          </div>
-        </div>
+      selected.forEach(template => {
+        const finalHook = template.replace(/{topic}/g, input);
+        
+        const card = document.createElement('div');
+        card.className = 'hook-card';
+        
+        card.innerHTML = `
+          <div class="hook-text">${finalHook}</div>
+          <button class="copy-btn" onclick="copyToClipboard(this, '${finalHook.replace(/'/g, "\\'")}')">Copy</button>
+        `;
+        
+        resultsContainer.appendChild(card);
+      });
+    }
 
-        <div class="bg-slate-950/70 p-5 rounded-xl border border-slate-800/80">
-          <h4 class="text-sm font-semibold text-cyan-400 mb-2">Recommended Action Items</h4>
-          <p id="actionItems" class="text-xs leading-relaxed text-slate-300 whitespace-pre-line"></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="mt-20 text-center">
-      <h2 class="text-2xl font-bold text-white">Simple, Usage-Based Plans</h2>
-      <p class="text-slate-400 text-sm mt-1">Scale storefront audits across multiple retail locations or landing pages.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto mt-8">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl text-left">
-          <p class="text-xs text-cyan-400 font-semibold uppercase">Starter Tier</p>
-          <p class="text-3xl font-extrabold text-white mt-2">Free</p>
-          <p class="text-xs text-slate-400 mt-1">3 free visual audits included</p>
-          <ul class="text-xs text-slate-300 space-y-2 mt-6">
-            <li>✓ Gemini Vision Storefront Grading</li>
-            <li>✓ Visual Merchandising Hierarchy</li>
-            <li>✓ Live Browser Inspection</li>
-          </ul>
-        </div>
-        <div class="bg-slate-900 border border-cyan-500/50 p-6 rounded-2xl text-left relative shadow-xl glow-cyan">
-          <span class="absolute top-3 right-3 text-[10px] bg-cyan-500 text-slate-950 font-bold px-2 py-0.5 rounded-full">PRO</span>
-          <p class="text-xs text-cyan-400 font-semibold uppercase">Pro Pass</p>
-          <p class="text-3xl font-extrabold text-white mt-2">$19 <span class="text-xs font-normal text-slate-400">/ 50 audits</span></p>
-          <p class="text-xs text-slate-400 mt-1">For agency clippers & store owners</p>
-          <ul class="text-xs text-slate-300 space-y-2 mt-6">
-            <li>✓ Unlimited High-Res Batch Audits</li>
-            <li>✓ Conversion Opportunity Scorecards</li>
-            <li>✓ Priority Gemini 2.5 Inference</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
-    <p>© 2026 Syntraforge. All rights reserved. Live on syntraforge.me.</p>
-  </footer>
-
-  <script src="app.js"></script>
+    function copyToClipboard(btnElement, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btnElement.innerText;
+        btnElement.innerText = 'Copied!';
+        btnElement.style.color = '#10b981';
+        btnElement.style.borderColor = '#10b981';
+        
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+          btnElement.style.color = '';
+          btnElement.style.borderColor = '';
+        }, 2000);
+      });
+    }
+  </script>
 </body>
 </html>
