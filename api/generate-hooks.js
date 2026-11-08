@@ -9,35 +9,33 @@
     return res.status(400).json({ error: "Topic is required" });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = (process.env.GEMINI_API_KEY || "").trim();
   if (!apiKey) {
-    return res.status(500).json({ error: "GEMINI_API_KEY is missing in environment variables" });
+    return res.status(500).json({ error: "GEMINI_API_KEY environment variable is missing" });
   }
 
-  const prompt = `You are a world-class viral video strategist.
+  const prompt = `You are an elite viral short-form video strategist.
 Generate 5 high-retention video hooks for:
 Topic: ${topic}
 Psychological Angle: ${angle || "Controversial"}
-Platform Focus: ${platform || "Shorts/Reels/TikTok"}
+Platform Focus: ${platform || "Instagram Reels & YouTube Shorts"}
 
-Format your response strictly as valid raw JSON with no Markdown wrapping or backticks. Return an array of 5 objects matching this schema:
+Return ONLY a valid raw JSON array of 5 objects with no markdown backticks or extra text:
 [
   {
-    "hook": "The opening verbal line (first 3 seconds)",
-    "visualCue": "Actionable on-screen text, gesture, or shot composition",
-    "score": "Virality retention score like 94%"
+    "hook": "The opening line for the first 3 seconds",
+    "visualCue": "Specific on-screen visual or camera movement",
+    "score": "95%"
   }
 ]`;
 
   try {
-    // Works with standard AIza keys as well as AQ. bearer tokens
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
           "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
@@ -53,9 +51,9 @@ Format your response strictly as valid raw JSON with no Markdown wrapping or bac
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Gemini API error details:", data);
+      console.error("Gemini API Error:", data);
       return res.status(response.status).json({
-        error: data.error?.message || "Google Generative API returned an error",
+        error: data.error?.message || "Google Generative AI call failed",
         details: data
       });
     }
