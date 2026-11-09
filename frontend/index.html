@@ -347,63 +347,45 @@
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-  
-  // --- SyntraForge 4K Native Resolution & Reset Engine ---
-  const sfResetBtn = document.getElementById("resetVideoBtn");
-  const sfVideo = document.getElementById("videoPlayer");
-  const sfDropzone = document.getElementById("dropzone");
-  const sfEditorArea = document.getElementById("editorArea");
-  const sfInput = document.getElementById("videoInput");
-  const sfCanvas = document.getElementById("hiddenCanvas");
-  const sfResDisplay = document.getElementById("videoResolution");
+  </script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('videoPlayer');
+    const resBox = document.getElementById('videoResolution');
+    const resetBtn = document.getElementById('resetVideoBtn');
+    const dropzone = document.getElementById('dropzone');
+    const editorArea = document.getElementById('editorArea');
+    const input = document.getElementById('videoInput');
 
-  if (sfVideo) {
-    sfVideo.addEventListener("loadedmetadata", () => {
-      if (sfResDisplay && sfVideo.videoWidth && sfVideo.videoHeight) {
-        const w = sfVideo.videoWidth;
-        const h = sfVideo.videoHeight;
-        let badge = `${w} × ${h}`;
+    if (video && resBox) {
+      video.addEventListener('loadedmetadata', () => {
+        const w = video.videoWidth;
+        const h = video.videoHeight;
         const maxDim = Math.max(w, h);
-        if (maxDim >= 3840) badge += " (4K UHD)";
-        else if (maxDim >= 2560) badge += " (2K QHD)";
-        else if (maxDim >= 1920) badge += " (1080p FHD)";
-    });
-  }
-
-  // Hook capture execution to guarantee true 4K pixel mapping
-  window.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn || !sfVideo || !sfCanvas) return;
-    const txt = (btn.textContent || "").toLowerCase();
-    if (txt.includes("capture") || txt.includes("grab") || txt.includes("extract") || txt.includes("download")) {
-      if (sfVideo.videoWidth && sfVideo.videoHeight) {
-        sfCanvas.width = sfVideo.videoWidth;
-        sfCanvas.height = sfVideo.videoHeight;
-        const ctx = sfCanvas.getContext("2d");
-        if (ctx) {
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
-          ctx.drawImage(sfVideo, 0, 0, sfVideo.videoWidth, sfVideo.videoHeight);
-        }
-      }
+        let tag = `${w} × ${h}`;
+        if (maxDim >= 3840) tag += " (4K UHD)";
+        else if (maxDim >= 2560) tag += " (2K QHD)";
+        else if (maxDim >= 1920) tag += " (1080p FHD)";
+        resBox.textContent = tag;
+      });
     }
-  }, true);
 
-  if (sfResetBtn) {
-    sfResetBtn.addEventListener("click", () => {
-      if (sfVideo) {
-        sfVideo.pause();
-        if (sfVideo.src && sfVideo.src.startsWith("blob:")) {
-          URL.revokeObjectURL(sfVideo.src);
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (video) {
+          video.pause();
+          if (video.src && video.src.startsWith('blob:')) {
+            URL.revokeObjectURL(video.src);
+          }
+          video.removeAttribute('src');
+          video.load();
         }
-        sfVideo.removeAttribute("src");
-        sfVideo.load();
-      }
-      if (sfInput) sfInput.value = "";
-      if (sfEditorArea) sfEditorArea.classList.add("hidden");
-      if (sfDropzone) sfDropzone.classList.remove("hidden");
-    });
-  }
-  // --- End 4K Engine ---
-</script></body>
+        if (input) input.value = '';
+        if (editorArea) editorArea.classList.add('hidden');
+        if (dropzone) dropzone.classList.remove('hidden');
+      });
+    }
+  });
+</script>
+</body>
 </html>
