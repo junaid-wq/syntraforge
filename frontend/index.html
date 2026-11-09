@@ -1,96 +1,31 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>SyntraForge FrameGrab | Instant Lossless 4K Video Frame Extractor</title>
-    <meta name="description" content="Free online video frame grabber. Extract lossless 4K still frames from MP4, WebM, and MOV videos directly in your browser. 100% private, client-side, zero upload limits.">
-  <meta name="keywords" content="video frame grabber, extract frames from video, video to image converter, 4k video screenshot online, capture still image from mp4, video thumbnail grabber, high resolution video frame extractor, grab picture from video free">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyntraForge FrameGrab | Extract Raw 4K Video Frames Instantly</title>
+  <meta name="description" content="Free, 100% private, client-side video frame extractor. Grab lossless 4K, 2K, and 1080p frames from MP4, WebM, and MOV videos without server uploads.">
   <link rel="canonical" href="https://syntraforge.me">
 
-  <!-- Open Graph / Social Sharing -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://syntraforge.me">
-  <meta property="og:title" content="SyntraForge FrameGrab | Instant Lossless Video Frame Extractor">
-  <meta property="og:description" content="Capture full-resolution lossless frames from MP4, WebM, and MOV videos right in your browser. Free, unlimited, zero uploads.">
-  <meta property="og:site_name" content="SyntraForge">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SyntraForge FrameGrab - Lossless Video Frame Grabber">
-  <meta name="twitter:description" content="Extract raw 4K video frames instantly in your browser with zero compression loss.">
-
-  <!-- Schema.org WebApplication Markup -->
+  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "SyntraForge FrameGrab",
     "url": "https://syntraforge.me",
-    "description": "Browser-based video frame extraction utility to capture lossless PNG and high-quality JPEG still images from video files.",
+    "description": "Extract full resolution raw 4K video frames directly in the browser with zero cloud uploads.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "All",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
-    },
-    "featureList": [
-      "Client-side frame extraction",
-      "Lossless PNG export",
-      "Native 4K UHD support",
-      "Zero server uploads",
-      "Sub-frame stepping"
-    ]
+    }
   }
   </script>
 
-  <!-- Schema.org FAQPage for Google Search Rich Snippets -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How do I extract a high-quality frame from a video?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Drag and drop your MP4, WebM, or MOV video into SyntraForge FrameGrab, scrub the video to your desired frame using arrow keys, and click Capture Frame to download a full-resolution PNG or JPEG."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Are video files uploaded to a server?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. All video processing occurs directly in your browser using hardware-accelerated Canvas APIs. Your video never leaves your computer."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I grab 4K video frames?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, SyntraForge FrameGrab extracts frames at the source file's original resolution, including 1080p, 2K, and 4K Ultra HD."
-        }
-      }
-    ]
-  }
-  </script>
-  <meta name="theme-color" content="#090d16">
-
-  <!-- Open Graph / SEO -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://syntraforge.me">
-  <meta property="og:title" content="SyntraForge FrameGrab | Instant Lossless Video Frame Extractor">
-  <meta property="og:description" content="Capture full-resolution lossless frames from MP4, WebM, and MOV videos right in your browser.">
-  
-  <!-- Google AdSense Official Script -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317028384309274" crossorigin="anonymous"></script>
-
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -98,323 +33,345 @@
       theme: {
         extend: {
           colors: {
-            brand: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+            brand: {
+              cyan: '#00f2fe',
+              purple: '#9d4edd',
+              dark: '#0a0d14',
+              surface: '#111726',
+              border: '#1f293d'
+            }
           }
         }
       }
     }
   </script>
-  <style>
-    /* Prevent layout shifting on ad load */
-    .ad-placeholder { min-height: 90px; }
-    @media (min-width: 640px) { .ad-placeholder { min-height: 100px; } }
-    @media (min-width: 1024px) { .ad-placeholder { min-height: 120px; } }
-  </style>
 </head>
-<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500/30 overflow-x-hidden">
+<body class="bg-brand-dark text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-cyan/20 selection:text-brand-cyan">
 
-  <!-- Top Navigation Header -->
-  <header class="w-full border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md sticky top-0 z-50">
+  <!-- Header -->
+  <header class="border-b border-brand-border bg-brand-surface/70 backdrop-blur-md sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 font-bold text-lg">
-          📸
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-brand-purple to-brand-cyan flex items-center justify-center p-0.5 shadow-lg shadow-brand-cyan/20">
+          <div class="w-full h-full bg-brand-dark rounded-[7px] flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              <circle cx="12" cy="13" r="3" stroke-width="2"></circle>
+            </svg>
+          </div>
         </div>
-        <span class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent tracking-tight">
-          SyntraForge FrameGrab
-        </span>
+        <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-brand-cyan bg-clip-text text-transparent">SyntraForge <span class="text-xs px-2 py-0.5 rounded-full border border-brand-cyan/30 text-brand-cyan ml-1 font-mono">FrameGrab</span></span>
       </div>
-      <div class="flex items-center space-x-4 text-xs font-medium text-slate-400">
-        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Lossless Native 4K
-        </span>
-        <button onclick="openModal('modal-contact')" class="hover:text-indigo-400 transition-colors">Support</button>
+      <div class="flex items-center space-x-2 text-xs text-slate-400 font-mono">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>100% Client-Side Engine</span>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Area -->
-  <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8 flex flex-col gap-10">
+  <!-- Main Container -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-8 flex flex-col space-y-8">
 
-    <!-- Hero Title -->
-    <section class="text-center space-y-3 pt-2">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-        Instant Lossless <span class="text-indigo-400">Video Frame Grabber</span>
-      </h1>
-      <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
-        Extract raw-resolution frames from any video directly in your browser. Zero cloud uploads, 100% privacy, completely free.
-      </p>
-    </section>
+    <!-- Hero / Value Prop -->
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Extract Native <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-purple">4K Video Frames</span></h1>
+      <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto">Zero compression loss. Processes 100% locally in your browser RAM with zero server uploads.</p>
+    </div>
 
-    <!-- Workspace & Tool Container -->
-    <section class="w-full bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl backdrop-blur-sm space-y-6">
+    <!-- Upload Dropzone -->
+    <div id="dropZone" class="border-2 border-dashed border-brand-border hover:border-brand-cyan/60 transition-colors rounded-2xl bg-brand-surface/40 p-8 flex flex-col items-center justify-center cursor-pointer group text-center relative overflow-hidden">
+      <input type="file" id="videoInput" accept="video/mp4,video/webm,video/quicktime,video/mkv" class="hidden">
+      <div class="w-14 h-14 rounded-full bg-brand-border/60 flex items-center justify-center text-slate-400 group-hover:text-brand-cyan group-hover:scale-110 transition-all duration-300">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        </svg>
+      </div>
+      <p class="mt-4 font-medium text-slate-200">Click to upload or drag & drop video</p>
+      <p class="text-xs text-slate-500 mt-1">Supports 4K UHD, 1080p, MP4, MOV, WebM (Unlimited file size)</p>
+    </div>
+
+    <!-- Workbench Area (Hidden until video uploaded) -->
+    <div id="workbench" class="hidden space-y-6">
       
-      <!-- Upload Dropzone -->
-      <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200 bg-slate-950/40 group">
-        <input type="file" id="videoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" class="hidden">
-        <div class="space-y-3 pointer-events-none">
-          <div class="w-14 h-14 mx-auto rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-            🎬
-          </div>
-          <div class="text-sm sm:text-base font-semibold text-slate-200">
-            Click to upload or drag & drop video
-          </div>
-          <p class="text-xs text-slate-500">Supports MP4, MOV, WebM (up to 4K 60FPS). Stays on your device.</p>
+      <!-- Video Player Wrapper -->
+      <div class="relative bg-black rounded-xl overflow-hidden border border-brand-border shadow-2xl flex items-center justify-center min-h-[320px] max-h-[560px]">
+        <video id="mainVideo" class="w-full h-full object-contain max-h-[560px]" preload="auto" playsinline></video>
+        
+        <!-- Live Resolution Badge -->
+        <div class="absolute top-4 left-4 z-10 flex items-center space-x-2 bg-black/70 backdrop-blur-md border border-white/10 rounded-lg px-3 py-1.5 text-xs font-mono">
+          <span class="text-slate-400">Source:</span>
+          <span id="resBadge" class="text-brand-cyan font-bold tracking-wide">Detecting...</span>
         </div>
+
+        <!-- Reset / Change Video Button on Top-Right of Video -->
+        <button id="resetVideoBtn" class="absolute top-4 right-4 z-10 flex items-center space-x-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 backdrop-blur-md rounded-lg px-3 py-1.5 text-xs font-medium transition-all shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          <span>Change Video</span>
+        </button>
       </div>
 
-      <!-- Video Player & Extraction Controls (Revealed after video upload) -->
-      <div id="editorArea" class="hidden space-y-6">
-        <div class="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-slate-800 shadow-inner">
-          <video id="videoPlayer" class="w-full h-full object-contain" playsinline controls></video>
-          <canvas id="hiddenCanvas" class="hidden"></canvas>
+      <!-- Controls & Stepping Bar -->
+      <div class="bg-brand-surface rounded-xl border border-brand-border p-5 space-y-4">
+        
+        <!-- Time Scrubbing -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-xs font-mono text-slate-400">
+            <span id="currentTimeDisplay">00:00:00.000</span>
+            <span id="durationDisplay">00:00:00.000</span>
+          </div>
+          <input type="range" id="timeSlider" min="0" max="100" value="0" step="0.001" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-cyan">
         </div>
 
-        <!-- Scrubber and Export Controls -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-          <div class="space-y-1">
-            <label class="text-xs text-slate-400">Format</label>
-            <select id="formatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="png">PNG (Lossless 24-bit)</option>
-              <option value="jpeg">JPEG (High Quality 95%)</option>
-              <option value="webp">WebP (Optimized)</option>
-            </select>
-          </div>
-          <div class="space-y-1">
-            <label class="text-xs text-slate-400">Resolution</label>
-            <div id="videoResolution" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-400 select-none">
-              Auto (Native)
-            </div>
-          </div>
-          <div class="flex items-end">
-            <button id="captureBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm">
-              <span>📸</span> Capture Frame
+        <!-- Buttons Grid -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+          
+          <!-- Stepping buttons -->
+          <div class="flex items-center space-x-2">
+            <button id="stepBackBtn" class="px-3 py-1.5 text-xs bg-brand-dark hover:bg-slate-800 border border-brand-border rounded-lg text-slate-300 transition-colors flex items-center gap-1 font-mono">
+              ⏮ -1 Frame
+            </button>
+            <button id="playPauseBtn" class="px-4 py-1.5 text-xs bg-brand-dark hover:bg-slate-800 border border-brand-border rounded-lg text-slate-300 transition-colors font-medium">
+              Play / Pause
+            </button>
+            <button id="stepFwdBtn" class="px-3 py-1.5 text-xs bg-brand-dark hover:bg-slate-800 border border-brand-border rounded-lg text-slate-300 transition-colors flex items-center gap-1 font-mono">
+              +1 Frame ⏭
             </button>
           </div>
-        </div>
 
-        <!-- Captured Frames Output List -->
-        <div id="galleryContainer" class="hidden space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Captured Frames</h3>
-          <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-      </div>
-    </section>
+          <!-- Format and Export Action -->
+          <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+            <select id="formatSelect" class="bg-brand-dark border border-brand-border text-slate-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-brand-cyan">
+              <option value="png">PNG (Lossless)</option>
+              <option value="jpeg">JPEG (High Quality 100%)</option>
+              <option value="webp">WebP (Modern Format)</option>
+            </select>
 
-    <!-- AD PLACEMENT ZONE 1: Premium Sponsored Mid-Break -->
-    <section class="w-full py-4 px-4 bg-slate-900/40 border border-slate-800/80 rounded-xl text-center">
-      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">SPONSORED</span>
-      <div class="ad-placeholder flex items-center justify-center overflow-hidden">
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; text-align:center;"
-             data-ad-client="ca-pub-4317028384309274"
-             data-ad-slot="9876543210"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </section>
-
-    <!-- Feature Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
-        <div class="text-indigo-400 text-xl font-bold">⚡ Zero Cloud Uploads</div>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Extraction runs client-side via hardware-accelerated HTML5 Canvas and WebGL. Your video never leaves your browser RAM.
-        </p>
-      </div>
-      <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
-        <div class="text-indigo-400 text-xl font-bold">🎯 Sub-Frame Accuracy</div>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Navigate timelines with keyboard arrow stepping to isolate exact motion frames, facial reactions, and high-impact thumbnail moments.
-        </p>
-      </div>
-      <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
-        <div class="text-indigo-400 text-xl font-bold">💎 4K Native Quality</div>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Capture still frames up to 3840×2160 pixels with no downsampling, watermark stamps, or artificial compression artifacts.
-        </p>
-      </div>
-    </section>
-
-    <!-- AD PLACEMENT ZONE 2: In-Article Content Monetization -->
-    <section class="w-full py-4 px-4 bg-slate-900/30 border border-slate-800/60 rounded-xl text-center">
-      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">ADVERTISEMENT</span>
-      <div class="ad-placeholder flex items-center justify-center overflow-hidden">
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; text-align:center;"
-             data-ad-client="ca-pub-4317028384309274"
-             data-ad-slot="9876543211"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </section>
-
-    <!-- Detailed SEO Guide & FAQ Section (Required for Content Density & Search Indexing) -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 sm:p-8">
-      <div class="space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <span>📖</span> How to Extract Video Frames Losslessly
-        </h2>
-        <ol class="space-y-3 text-xs sm:text-sm text-slate-400 list-decimal list-inside leading-relaxed">
-          <li><strong class="text-slate-200">Load Video:</strong> Drag any local MP4, WebM, or MOV file into the dropzone.</li>
-          <li><strong class="text-slate-200">Scrub & Seek:</strong> Use native playback or keyboard arrow keys to cue the exact millisecond.</li>
-          <li><strong class="text-slate-200">Choose Format:</strong> Select Lossless PNG for crisp typography/overlays, or JPEG/WebP for compact web assets.</li>
-          <li><strong class="text-slate-200">Export:</strong> Click "Capture Frame" to save the raw dimensions directly to your local downloads.</li>
-        </ol>
-      </div>
-
-      <div class="space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <span>❓</span> Frequently Asked Questions
-        </h2>
-        <div class="space-y-3 text-xs sm:text-sm text-slate-400">
-          <div>
-            <h3 class="font-semibold text-slate-200">Are my videos ever sent to a server?</h3>
-            <p class="leading-relaxed">No. Processing is 100% sandboxed within your local browser runtime. Zero bytes are uploaded.</p>
+            <button id="captureBtn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-gradient-to-r from-brand-cyan to-brand-purple hover:opacity-95 text-brand-dark font-bold text-xs tracking-wider uppercase transition-all shadow-lg shadow-brand-cyan/20 flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+              Extract Native Frame
+            </button>
           </div>
-          <div>
-            <h3 class="font-semibold text-slate-200">What is the maximum resolution supported?</h3>
-            <p class="leading-relaxed">FrameGrab supports full 4K UHD (3840×2160) and high-framerate 60FPS video, limited only by device hardware decoding.</p>
-          </div>
+
         </div>
       </div>
-    </section>
 
-    <!-- AD PLACEMENT ZONE 3: Above-Footer Banner -->
-    <section class="w-full py-4 px-4 bg-slate-900/40 border border-slate-800/80 rounded-xl text-center">
-      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">SPONSORED LINKS</span>
-      <div class="ad-placeholder flex items-center justify-center overflow-hidden">
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; text-align:center;"
-             data-ad-client="ca-pub-4317028384309274"
-             data-ad-slot="9876543212"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+      <!-- Preview Modal/Card -->
+      <div id="previewCard" class="hidden bg-brand-surface rounded-xl border border-brand-border p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-slate-200">Captured Snapshot Preview</h3>
+          <span id="snapshotDetails" class="text-xs text-brand-cyan font-mono"></span>
+        </div>
+        <div class="rounded-lg overflow-hidden border border-brand-border/60 bg-black max-h-[400px] flex items-center justify-center">
+          <img id="snapshotImg" class="max-h-[400px] w-auto object-contain" alt="Frame Snapshot">
+        </div>
+        <div class="flex justify-end gap-3">
+          <button id="downloadSnapshotBtn" class="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-black font-bold text-xs rounded-lg transition-colors flex items-center gap-2">
+            Download Image
+          </button>
+        </div>
       </div>
-    </section>
+
+    </div>
 
   </main>
 
-  <!-- Footer with Legal & Compliance Modals -->
-  <footer class="w-full border-t border-slate-800/80 bg-slate-950 py-8 px-4 mt-8">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      <p>© 2026 SyntraForge. Client-side browser utilities for creators & editors.</p>
-      <div class="flex items-center space-x-6">
-        <button onclick="openModal('modal-privacy')" class="hover:text-slate-300 transition-colors">Privacy Policy</button>
-        <button onclick="openModal('modal-terms')" class="hover:text-slate-300 transition-colors">Terms of Service</button>
-        <button onclick="openModal('modal-contact')" class="hover:text-slate-300 transition-colors">Contact</button>
-      </div>
-    </div>
+  <!-- Offscreen Native Canvas for Rendering -->
+  <canvas id="hiddenCanvas" class="hidden"></canvas>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-border py-6 text-center text-xs text-slate-500">
+    <p>© 2026 SyntraForge. Client-side video processing engine. No data leaves your machine.</p>
   </footer>
 
-  <!-- Privacy Policy Modal -->
-  <div id="modal-privacy" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-sm font-bold text-white">Privacy Policy</h3>
-        <button onclick="closeModal('modal-privacy')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
-      </div>
-      <p>SyntraForge FrameGrab operates as a client-side web application. Video files loaded into the application are parsed exclusively using your local browser APIs and are never transmitted over the internet or stored on external servers.</p>
-      <p>We use third-party monetization tools, including Google AdSense, which may use cookies to serve ads based on user visits to this and other websites on the internet. You can manage personalized advertising preferences via Google Ads Settings.</p>
-    </div>
-  </div>
-
-  <!-- Terms Modal -->
-  <div id="modal-terms" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-sm font-bold text-white">Terms of Service</h3>
-        <button onclick="closeModal('modal-terms')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
-      </div>
-      <p>This software utility is provided "as is", without warranty of any kind. SyntraForge makes no claims regarding fitness for particular workflows. You remain responsible for ensuring you have rights to the media you process.</p>
-    </div>
-  </div>
-
-  <!-- Contact Modal -->
-  <div id="modal-contact" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 class="text-sm font-bold text-white">Support & Contact</h3>
-        <button onclick="closeModal('modal-contact')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
-      </div>
-      <p>For questions, technical feedback, or partnership inquiries regarding SyntraForge tools, contact us directly:</p>
-      <p class="font-mono text-indigo-400 bg-slate-950 p-2 rounded border border-slate-800">contact@syntraforge.me</p>
-    </div>
-  </div>
-
-  <!-- Core Video Handling Script -->
+  <!-- Core JavaScript Engine -->
   <script>
-    const dropzone = document.getElementById('dropzone');
+    const dropZone = document.getElementById('dropZone');
     const videoInput = document.getElementById('videoInput');
-    const editorArea = document.getElementById('editorArea');
-    const videoPlayer = document.getElementById('videoPlayer');
-    const canvas = document.getElementById('hiddenCanvas');
+    const workbench = document.getElementById('workbench');
+    const video = document.getElementById('mainVideo');
+    const resBadge = document.getElementById('resBadge');
+    const timeSlider = document.getElementById('timeSlider');
+    const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+    const durationDisplay = document.getElementById('durationDisplay');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const stepBackBtn = document.getElementById('stepBackBtn');
+    const stepFwdBtn = document.getElementById('stepFwdBtn');
     const captureBtn = document.getElementById('captureBtn');
     const formatSelect = document.getElementById('formatSelect');
-    const resolutionLabel = document.getElementById('videoResolution');
-    const galleryContainer = document.getElementById('galleryContainer');
-    const galleryGrid = document.getElementById('galleryGrid');
+    const hiddenCanvas = document.getElementById('hiddenCanvas');
+    const previewCard = document.getElementById('previewCard');
+    const snapshotImg = document.getElementById('snapshotImg');
+    const snapshotDetails = document.getElementById('snapshotDetails');
+    const downloadSnapshotBtn = document.getElementById('downloadSnapshotBtn');
+    const resetVideoBtn = document.getElementById('resetVideoBtn');
 
-    dropzone.addEventListener('click', () => videoInput.click());
-    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-indigo-500'); });
-    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-indigo-500'));
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('border-indigo-500');
-      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-    });
-    videoInput.addEventListener('change', (e) => {
-      if (e.target.files.length) handleFile(e.target.files[0]);
-    });
+    let currentFileURL = null;
+    let latestDataURL = null;
+    let latestFilename = 'frame.png';
 
-    function handleFile(file) {
-      if (!file.type.startsWith('video/')) return alert('Please upload a valid video file.');
-      const url = URL.createObjectURL(file);
-      videoPlayer.src = url;
-      dropzone.classList.add('hidden');
-      editorArea.classList.remove('hidden');
-
-      videoPlayer.onloadedmetadata = () => {
-        resolutionLabel.textContent = `${videoPlayer.videoWidth} × ${videoPlayer.videoHeight} (${videoPlayer.videoWidth >= 3840 ? '4K' : videoPlayer.videoWidth >= 1920 ? '1080p' : 'HD'})`;
-      };
+    function formatTime(seconds) {
+      const date = new Date(null);
+      date.setMilliseconds(seconds * 1000);
+      return date.toISOString().substr(11, 12);
     }
 
-    captureBtn.addEventListener('click', () => {
-      if (!videoPlayer.videoWidth) return;
-      canvas.width = videoPlayer.videoWidth;
-      canvas.height = videoPlayer.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
-
-      const format = formatSelect.value;
-      const mime = format === 'png' ? 'image/png' : format === 'webp' ? 'image/webp' : 'image/jpeg';
-      const dataUrl = canvas.toDataURL(mime, 0.95);
-
-      galleryContainer.classList.remove('hidden');
-      const item = document.createElement('div');
-      item.className = 'relative group rounded-lg overflow-hidden border border-slate-800 bg-slate-950 aspect-video';
-      item.innerHTML = `
-        <img src="${dataUrl}" class="w-full h-full object-cover">
-        <a href="${dataUrl}" download="syntraforge_frame_${Math.floor(videoPlayer.currentTime * 1000)}ms.${format}"
-           class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-xs font-semibold text-white transition-opacity">
-          Save Frame
-        </a>
-      `;
-      galleryGrid.prepend(item);
+    // Drag & Drop Listeners
+    dropZone.addEventListener('click', () => videoInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-brand-cyan');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-brand-cyan'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-brand-cyan');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        loadVideo(e.dataTransfer.files[0]);
+      }
     });
 
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    videoInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        loadVideo(e.target.files[0]);
+      }
+    });
+
+    function loadVideo(file) {
+      if (currentFileURL) {
+        URL.revokeObjectURL(currentFileURL);
+      }
+      currentFileURL = URL.createObjectURL(file);
+      video.src = currentFileURL;
+      dropZone.classList.add('hidden');
+      workbench.classList.remove('hidden');
+      previewCard.classList.add('hidden');
+    }
+
+    // RESET FUNCTIONALITY (Cleans up memory & restores upload dropzone)
+    resetVideoBtn.addEventListener('click', () => {
+      video.pause();
+      if (currentFileURL) {
+        URL.revokeObjectURL(currentFileURL);
+        currentFileURL = null;
+      }
+      video.removeAttribute('src');
+      video.load();
+      videoInput.value = '';
+
+      workbench.classList.add('hidden');
+      previewCard.classList.add('hidden');
+      dropZone.classList.remove('hidden');
+    });
+
+    // Video Metadata Loaded (Detect true source dimensions)
+    video.addEventListener('loadedmetadata', () => {
+      const width = video.videoWidth;
+      const height = video.videoHeight;
+
+      let label = `${width} × ${height}`;
+      if (width >= 3840 || height >= 2160) {
+        label += ' (4K UHD)';
+      } else if (width >= 2560 || height >= 1440) {
+        label += ' (2K QHD)';
+      } else if (width >= 1920 || height >= 1080) {
+        label += ' (1080p FHD)';
+      }
+
+      resBadge.textContent = label;
+      timeSlider.max = video.duration;
+      durationDisplay.textContent = formatTime(video.duration);
+      currentTimeDisplay.textContent = formatTime(0);
+    });
+
+    // Time Tracking
+    video.addEventListener('timeupdate', () => {
+      timeSlider.value = video.currentTime;
+      currentTimeDisplay.textContent = formatTime(video.currentTime);
+    });
+
+    timeSlider.addEventListener('input', () => {
+      video.currentTime = parseFloat(timeSlider.value);
+    });
+
+    // Play / Pause
+    playPauseBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+
+    // Sub-frame stepping (~30fps standard increment: ~0.033s)
+    stepBackBtn.addEventListener('click', () => {
+      video.pause();
+      video.currentTime = Math.max(0, video.currentTime - 0.0333);
+    });
+
+    stepFwdBtn.addEventListener('click', () => {
+      video.pause();
+      video.currentTime = Math.min(video.duration, video.currentTime + 0.0333);
+    });
+
+    // Native Frame Capture Logic (No downscaling)
+    captureBtn.addEventListener('click', () => {
+      const nativeWidth = video.videoWidth;
+      const nativeHeight = video.videoHeight;
+
+      if (!nativeWidth || !nativeHeight) {
+        alert('Video dimensions not available yet.');
+        return;
+      }
+
+      hiddenCanvas.width = nativeWidth;
+      hiddenCanvas.height = nativeHeight;
+
+      const ctx = hiddenCanvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // Draw exact raw frame
+      ctx.drawImage(video, 0, 0, nativeWidth, nativeHeight);
+
+      const format = formatSelect.value;
+      let mimeType = 'image/png';
+      let extension = 'png';
+
+      if (format === 'jpeg') {
+        mimeType = 'image/jpeg';
+        extension = 'jpg';
+        latestDataURL = hiddenCanvas.toDataURL(mimeType, 1.0);
+      } else if (format === 'webp') {
+        mimeType = 'image/webp';
+        extension = 'webp';
+        latestDataURL = hiddenCanvas.toDataURL(mimeType, 1.0);
+      } else {
+        latestDataURL = hiddenCanvas.toDataURL('image/png');
+      }
+
+      const timestamp = video.currentTime.toFixed(3).replace('.', '_');
+      latestFilename = `syntraforge_${nativeWidth}x${nativeHeight}_${timestamp}.${extension}`;
+
+      snapshotImg.src = latestDataURL;
+      snapshotDetails.textContent = `${nativeWidth} × ${nativeHeight}px • ${format.toUpperCase()}`;
+      previewCard.classList.remove('hidden');
+      previewCard.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Download Handler
+    downloadSnapshotBtn.addEventListener('click', () => {
+      if (!latestDataURL) return;
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.href = latestDataURL;
+      downloadAnchor.download = latestFilename;
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      document.body.removeChild(downloadAnchor);
+    });
   </script>
 </body>
 </html>
-
