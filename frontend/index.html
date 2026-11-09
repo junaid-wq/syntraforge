@@ -93,7 +93,12 @@
 
       <!-- Video Player & Extraction Controls (Revealed after video upload) -->
       <div id="editorArea" class="hidden space-y-6">
-        <div class="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-slate-800 shadow-inner">
+        <div class="flex justify-end pb-2">
+  <button id="resetVideoBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-300 text-xs font-semibold transition-colors cursor-pointer">
+    <span>↺</span> Change Video
+  </button>
+</div>
+<div class="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-slate-800 shadow-inner">
           <video id="videoPlayer" class="w-full h-full object-contain" playsinline controls></video>
           <canvas id="hiddenCanvas" class="hidden"></canvas>
         </div>
@@ -342,6 +347,64 @@
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-  </script>
-</body>
+  
+  // --- SyntraForge 4K Native Resolution & Reset Engine ---
+  const sfResetBtn = document.getElementById("resetVideoBtn");
+  const sfVideo = document.getElementById("videoPlayer");
+  const sfDropzone = document.getElementById("dropzone");
+  const sfEditorArea = document.getElementById("editorArea");
+  const sfInput = document.getElementById("videoInput");
+  const sfCanvas = document.getElementById("hiddenCanvas");
+  const sfResDisplay = document.getElementById("videoResolution");
+
+  if (sfVideo) {
+    sfVideo.addEventListener("loadedmetadata", () => {
+      if (sfResDisplay && sfVideo.videoWidth && sfVideo.videoHeight) {
+        const w = sfVideo.videoWidth;
+        const h = sfVideo.videoHeight;
+        let badge = `${w} × ${h}`;
+        if (w >= 3840 || h >= 2160) badge += " (4K UHD)";
+        else if (w >= 2560 || h >= 1440) badge += " (2K QHD)";
+        else if (w >= 1920 || h >= 1080) badge += " (1080p FHD)";
+        sfResDisplay.textContent = badge;
+      }
+    });
+  }
+
+  // Hook capture execution to guarantee true 4K pixel mapping
+  window.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn || !sfVideo || !sfCanvas) return;
+    const txt = (btn.textContent || "").toLowerCase();
+    if (txt.includes("capture") || txt.includes("grab") || txt.includes("extract") || txt.includes("download")) {
+      if (sfVideo.videoWidth && sfVideo.videoHeight) {
+        sfCanvas.width = sfVideo.videoWidth;
+        sfCanvas.height = sfVideo.videoHeight;
+        const ctx = sfCanvas.getContext("2d");
+        if (ctx) {
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(sfVideo, 0, 0, sfVideo.videoWidth, sfVideo.videoHeight);
+        }
+      }
+    }
+  }, true);
+
+  if (sfResetBtn) {
+    sfResetBtn.addEventListener("click", () => {
+      if (sfVideo) {
+        sfVideo.pause();
+        if (sfVideo.src && sfVideo.src.startsWith("blob:")) {
+          URL.revokeObjectURL(sfVideo.src);
+        }
+        sfVideo.removeAttribute("src");
+        sfVideo.load();
+      }
+      if (sfInput) sfInput.value = "";
+      if (sfEditorArea) sfEditorArea.classList.add("hidden");
+      if (sfDropzone) sfDropzone.classList.remove("hidden");
+    });
+  }
+  // --- End 4K Engine ---
+</script></body>
 </html>
