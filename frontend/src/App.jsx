@@ -1,20 +1,4 @@
 ﻿import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  Upload,
-  Play,
-  Pause,
-  Download,
-  Copy,
-  ChevronLeft,
-  ChevronRight,
-  Trash2,
-  Check,
-  Shield,
-  Zap,
-  Sparkles,
-  Film,
-  Camera
-} from "lucide-react";
 
 export default function App() {
   const [videoSrc, setVideoSrc] = useState(null);
@@ -159,7 +143,7 @@ export default function App() {
       setCopiedIndex(index !== null ? index : "active");
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch {
-      alert("Direct clipboard copying is supported in modern browsers over HTTPS. Use the Grab Frame button to download directly.");
+      alert("Direct clipboard copy requires browser permission over HTTPS. You can use 'Grab Frame' to download lossless files directly.");
     }
   };
 
@@ -191,12 +175,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-50">
+    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans">
+      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="bg-indigo-600 p-2 rounded-lg text-white">
-              <Camera className="w-5 h-5" />
+            <div className="bg-indigo-600 p-2 rounded-lg text-white font-bold">
+              📷
             </div>
             <div>
               <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
@@ -208,19 +192,15 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center space-x-4 text-xs text-slate-400">
-            <span className="flex items-center gap-1">
-              <Shield className="w-4 h-4 text-emerald-400" /> Zero Uploads
-            </span>
-            <span className="flex items-center gap-1">
-              <Zap className="w-4 h-4 text-amber-400" /> Lossless Native
-            </span>
+            <span>🛡️ Zero Uploads</span>
+            <span>⚡ Lossless Native</span>
           </div>
         </div>
       </header>
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-8">
         <section className="text-center max-w-2xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-50">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
             Instant Lossless Video Frame Grabber
           </h1>
           <p className="mt-2 text-sm sm:text-base text-slate-400">
@@ -241,7 +221,7 @@ export default function App() {
             className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${
               isDragging
                 ? "border-indigo-500 bg-indigo-950/20"
-                : "border-slate-800 bg-slate-900/40 hover:border-slate-700 hover:bg-slate-900/60"
+                : "border-slate-800 bg-slate-900/50 hover:border-slate-700 hover:bg-slate-900/80"
             }`}
           >
             <input
@@ -252,8 +232,8 @@ export default function App() {
               className="hidden"
             />
             <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="p-4 bg-indigo-900/30 border border-indigo-700/50 rounded-full text-indigo-400">
-                <Upload className="w-8 h-8" />
+              <div className="p-4 bg-indigo-900/40 border border-indigo-700/50 rounded-full text-indigo-400 text-3xl">
+                📂
               </div>
               <div>
                 <p className="text-base font-semibold text-slate-200">
@@ -307,35 +287,30 @@ export default function App() {
                   <button
                     onClick={() => jumpSeconds(-1)}
                     className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300"
-                    title="Jump -1s"
                   >
                     -1s
                   </button>
                   <button
                     onClick={() => stepFrame(-1)}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300"
-                    title="Previous Frame (Left Arrow)"
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-sm font-bold"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    ◀
                   </button>
                   <button
                     onClick={togglePlay}
                     className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center gap-1.5 font-medium text-xs sm:text-sm"
                   >
-                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                    {isPlaying ? "Pause" : "Play"}
+                    {isPlaying ? "⏸ Pause" : "▶ Play"}
                   </button>
                   <button
                     onClick={() => stepFrame(1)}
-                    className="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300"
-                    title="Next Frame (Right Arrow)"
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-sm font-bold"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    ▶
                   </button>
                   <button
                     onClick={() => jumpSeconds(1)}
                     className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300"
-                    title="Jump +1s"
                   >
                     +1s
                   </button>
@@ -361,30 +336,24 @@ export default function App() {
                   </select>
                   <button
                     onClick={() => copyToClipboard()}
-                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center gap-1.5 text-xs font-medium"
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium"
                   >
-                    {copiedIndex === "active" ? (
-                      <Check className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                    Copy
+                    {copiedIndex === "active" ? "✓ Copied!" : "📋 Copy"}
                   </button>
                   <button
                     onClick={downloadFrame}
-                    className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg flex items-center gap-1.5 text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30"
+                    className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30"
                   >
-                    <Download className="w-4 h-4" />
-                    Grab Frame
+                    ⬇ Grab Frame
                   </button>
                   <button
                     onClick={() => {
                       setVideoSrc(null);
                       setSnapshots([]);
                     }}
-                    className="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg"
+                    className="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg text-sm"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    🗑️
                   </button>
                 </div>
               </div>
@@ -392,8 +361,8 @@ export default function App() {
 
             {snapshots.length > 0 && (
               <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-                  <Film className="w-4 h-4 text-indigo-400" /> Captured Frames ({snapshots.length})
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+                  Captured Frames ({snapshots.length})
                 </h3>
                 <div className="flex gap-4 overflow-x-auto pb-2">
                   {snapshots.map((snap, idx) => (
@@ -409,18 +378,14 @@ export default function App() {
                             onClick={() => copyToClipboard(idx, snap.url)}
                             className="p-1 hover:text-white"
                           >
-                            {copiedIndex === idx ? (
-                              <Check className="w-3 h-3 text-emerald-400" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
+                            {copiedIndex === idx ? "✓" : "📋"}
                           </button>
                           <a
                             href={snap.url}
                             download={`frame_${snap.time.toFixed(2)}.${exportFormat}`}
                             className="p-1 hover:text-white"
                           >
-                            <Download className="w-3 h-3" />
+                            ⬇
                           </a>
                         </div>
                       </div>
@@ -444,25 +409,19 @@ export default function App() {
 
         <section className="grid sm:grid-cols-3 gap-6 pt-4 border-t border-slate-900 text-sm">
           <div className="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
-            <h4 className="font-semibold text-slate-200 mb-1 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-indigo-400" /> Instant Frame Stepping
-            </h4>
+            <h4 className="font-semibold text-slate-200 mb-1">⚡ Instant Frame Stepping</h4>
             <p className="text-slate-400 text-xs leading-relaxed">
-              Use arrow keys or buttons to step frame-by-frame. Select exact thumbnail shots or reaction poses without missing a frame.
+              Use keyboard arrows to jump frame-by-frame. Extract exact thumbnail shots or reaction poses without missing a moment.
             </p>
           </div>
           <div className="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
-            <h4 className="font-semibold text-slate-200 mb-1 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-emerald-400" /> 100% Client-Side
-            </h4>
+            <h4 className="font-semibold text-slate-200 mb-1">🛡️ 100% Client-Side</h4>
             <p className="text-slate-400 text-xs leading-relaxed">
               Files never upload to any server. All processing uses hardware-accelerated browser Canvas APIs directly in local memory.
             </p>
           </div>
           <div className="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
-            <h4 className="font-semibold text-slate-200 mb-1 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-400" /> Raw Native Resolution
-            </h4>
+            <h4 className="font-semibold text-slate-200 mb-1">✨ Raw Native Resolution</h4>
             <p className="text-slate-400 text-xs leading-relaxed">
               Export lossless PNGs matching the exact resolution of the original video (4K, 1080p, or 9:16 vertical).
             </p>
