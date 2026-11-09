@@ -1,13 +1,332 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SyntraForge FrameGrab - Instant Lossless Video Frame Extractor</title>
-  </head>
-  <body class="bg-slate-950 text-slate-100 min-h-screen">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyntraForge FrameGrab - Instant Lossless Video Frame Extractor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type=range]::-webkit-slider-thumb {
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: #6366f1;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+  </style>
+</head>
+<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold text-lg leading-none">
+          📷
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            SyntraForge FrameGrab
+          </span>
+          <span class="ml-2 text-xs text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/40">
+            100% Client-Side
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 text-xs text-slate-400">
+        <span>🛡️ Zero Uploads</span>
+        <span class="hidden sm:inline">⚡ Lossless Native 4K</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-8">
+    <section class="text-center max-w-2xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+        Instant Lossless Video Frame Grabber
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-400">
+        Extract pixel-perfect, raw-resolution frames from any video directly in your browser.
+        Zero server uploads, zero compression loss, completely free.
+      </p>
+    </section>
+
+    <!-- Upload Dropzone -->
+    <div id="dropZone" class="border-2 border-dashed border-slate-800 bg-slate-900/50 hover:border-slate-700 hover:bg-slate-900/80 rounded-2xl p-12 text-center cursor-pointer transition-all">
+      <input type="file" id="fileInput" accept="video/*" class="hidden" />
+      <div class="flex flex-col items-center justify-center space-y-4">
+        <div class="p-4 bg-indigo-900/40 border border-indigo-700/50 rounded-full text-indigo-400 text-3xl">
+          📂
+        </div>
+        <div>
+          <p class="text-base font-semibold text-slate-200">
+            Click to select or drag and drop your video file
+          </p>
+          <p class="text-xs text-slate-500 mt-1">
+            Supports MP4, MOV, WebM (up to 4K 60FPS). Files never leave your browser.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Workspace Area (Hidden Initially) -->
+    <div id="workspace" class="hidden space-y-6">
+      <div class="relative bg-black rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center max-h-[65vh]">
+        <video id="videoPlayer" class="w-full h-auto max-h-[65vh] object-contain" playsinline></video>
+      </div>
+
+      <!-- Controls Card -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 sm:p-6 flex flex-col gap-4">
+        <!-- Scrubbing Slider -->
+        <div class="flex items-center gap-3">
+          <span id="currentTimeDisplay" class="font-mono text-xs text-slate-400 min-w-[75px]">00:00.000</span>
+          <input type="range" id="timeSlider" min="0" max="100" step="0.001" value="0" class="flex-1 accent-indigo-500 cursor-pointer h-2 bg-slate-800 rounded-lg">
+          <span id="durationDisplay" class="font-mono text-xs text-slate-500 min-w-[75px] text-right">00:00.000</span>
+        </div>
+
+        <!-- Buttons Toolbar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-800/80">
+          <!-- Step Controls -->
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <button id="btnJumpBack" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300">-1s</button>
+            <button id="btnFramePrev" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-sm font-bold" title="Previous Frame (Left Arrow)">◀</button>
+            <button id="btnPlayPause" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg flex items-center gap-1.5 font-medium text-xs sm:text-sm">▶ Play</button>
+            <button id="btnFrameNext" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-sm font-bold" title="Next Frame (Right Arrow)">▶</button>
+            <button id="btnJumpForward" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300">+1s</button>
+          </div>
+
+          <!-- Video Specs Badge -->
+          <div class="flex items-center gap-3 text-xs text-slate-400 font-mono">
+            <span id="frameCounter" class="bg-slate-800/80 px-2.5 py-1 rounded-md">Frame ~0</span>
+            <span id="resolutionBadge" class="bg-slate-800/80 px-2.5 py-1 rounded-md">0 × 0 px</span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-2">
+            <select id="formatSelect" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              <option value="png">PNG (Lossless)</option>
+              <option value="jpeg">JPG (Quality 98%)</option>
+            </select>
+            <button id="btnCopy" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium">📋 Copy</button>
+            <button id="btnDownload" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-900/30">⬇ Grab Frame</button>
+            <button id="btnClear" class="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg text-sm" title="Remove video">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Snapshots Gallery -->
+      <div id="galleryContainer" class="hidden bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Captured Frames This Session</h3>
+        <div id="snapshotsTray" class="flex gap-4 overflow-x-auto pb-2"></div>
+      </div>
+    </div>
+
+    <!-- AdSense Placeholder Unit -->
+    <div class="w-full py-6 px-4 bg-slate-900/40 border border-slate-800/80 rounded-xl text-center">
+      <span class="text-[11px] uppercase tracking-wider text-slate-500 block mb-1">Advertisement</span>
+      <div class="h-24 sm:h-28 flex items-center justify-center border border-dashed border-slate-800 rounded-lg text-slate-600 text-xs">
+        Responsive Ad Unit (728x90)
+      </div>
+    </div>
+
+    <!-- Feature Pillars -->
+    <section class="grid sm:grid-cols-3 gap-6 pt-4 border-t border-slate-900 text-sm">
+      <div class="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
+        <h4 class="font-semibold text-slate-200 mb-1">⚡ Instant Frame Stepping</h4>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Use arrow keys to jump single frames (1/30s). Catch micro-expressions, thumbnails, and key moments with precision.
+        </p>
+      </div>
+      <div class="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
+        <h4 class="font-semibold text-slate-200 mb-1">🛡️ 100% Client-Side Privacy</h4>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Your video never leaves your computer. The browser renders pixels directly in hardware RAM.
+        </p>
+      </div>
+      <div class="p-4 bg-slate-900/40 border border-slate-800/50 rounded-xl">
+        <h4 class="font-semibold text-slate-200 mb-1">✨ Raw Native Resolution</h4>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Export lossless PNGs matching the exact resolution of the original video (4K, 1080p, or vertical 9:16).
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    <p>© 2026 SyntraForge. Pure client-side browser utilities for creators & editors.</p>
+  </footer>
+
+  <script>
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const workspace = document.getElementById("workspace");
+    const video = document.getElementById("videoPlayer");
+    const timeSlider = document.getElementById("timeSlider");
+    const currentTimeDisplay = document.getElementById("currentTimeDisplay");
+    const durationDisplay = document.getElementById("durationDisplay");
+    const btnPlayPause = document.getElementById("btnPlayPause");
+    const btnFramePrev = document.getElementById("btnFramePrev");
+    const btnFrameNext = document.getElementById("btnFrameNext");
+    const btnJumpBack = document.getElementById("btnJumpBack");
+    const btnJumpForward = document.getElementById("btnJumpForward");
+    const frameCounter = document.getElementById("frameCounter");
+    const resolutionBadge = document.getElementById("resolutionBadge");
+    const formatSelect = document.getElementById("formatSelect");
+    const btnDownload = document.getElementById("btnDownload");
+    const btnCopy = document.getElementById("btnCopy");
+    const btnClear = document.getElementById("btnClear");
+    const galleryContainer = document.getElementById("galleryContainer");
+    const snapshotsTray = document.getElementById("snapshotsTray");
+
+    let videoFileName = "frame";
+    const fps = 30;
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      const ms = Math.floor((sec % 1) * 1000);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(ms).padStart(3, '0')}`;
+    }
+
+    function loadVideo(file) {
+      if (!file || !file.type.startsWith("video/")) {
+        alert("Please upload a valid video file (.mp4, .webm, .mov).");
+        return;
+      }
+      videoFileName = file.name.replace(/\.[^/.]+$/, "");
+      video.src = URL.createObjectURL(file);
+      dropZone.classList.add("hidden");
+      workspace.classList.remove("hidden");
+    }
+
+    dropZone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", (e) => loadVideo(e.target.files[0]));
+
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("border-indigo-500", "bg-indigo-950/20");
+    });
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("border-indigo-500", "bg-indigo-950/20");
+    });
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("border-indigo-500", "bg-indigo-950/20");
+      if (e.dataTransfer.files[0]) loadVideo(e.dataTransfer.files[0]);
+    });
+
+    video.addEventListener("loadedmetadata", () => {
+      timeSlider.max = video.duration;
+      durationDisplay.textContent = formatTime(video.duration);
+      resolutionBadge.textContent = `${video.videoWidth} × ${video.videoHeight} px`;
+    });
+
+    video.addEventListener("timeupdate", () => {
+      timeSlider.value = video.currentTime;
+      currentTimeDisplay.textContent = formatTime(video.currentTime);
+      frameCounter.textContent = `Frame ~${Math.floor(video.currentTime * fps)}`;
+    });
+
+    timeSlider.addEventListener("input", (e) => {
+      video.currentTime = parseFloat(e.target.value);
+    });
+
+    function togglePlay() {
+      if (video.paused) {
+        video.play();
+        btnPlayPause.textContent = "⏸ Pause";
+      } else {
+        video.pause();
+        btnPlayPause.textContent = "▶ Play";
+      }
+    }
+    btnPlayPause.addEventListener("click", togglePlay);
+    video.addEventListener("ended", () => { btnPlayPause.textContent = "▶ Play"; });
+
+    function stepFrame(frames) {
+      video.pause();
+      btnPlayPause.textContent = "▶ Play";
+      video.currentTime = Math.min(Math.max(0, video.currentTime + frames * (1 / fps)), video.duration);
+    }
+
+    btnFramePrev.addEventListener("click", () => stepFrame(-1));
+    btnFrameNext.addEventListener("click", () => stepFrame(1));
+    btnJumpBack.addEventListener("click", () => stepFrame(-fps));
+    btnJumpForward.addEventListener("click", () => stepFrame(fps));
+
+    window.addEventListener("keydown", (e) => {
+      if (workspace.classList.contains("hidden")) return;
+      if (e.code === "Space") {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === "ArrowLeft") {
+        e.preventDefault();
+        stepFrame(-1);
+      } else if (e.code === "ArrowRight") {
+        e.preventDefault();
+        stepFrame(1);
+      }
+    });
+
+    function getFrameCanvas() {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      return canvas;
+    }
+
+    btnDownload.addEventListener("click", () => {
+      const format = formatSelect.value;
+      const mime = format === "png" ? "image/png" : "image/jpeg";
+      const canvas = getFrameCanvas();
+      
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${videoFileName}_${video.currentTime.toFixed(3).replace('.', '_')}.${format}`;
+        link.click();
+
+        // Add to gallery
+        galleryContainer.classList.remove("hidden");
+        const card = document.createElement("div");
+        card.className = "min-w-[140px] max-w-[160px] bg-slate-950 border border-slate-800 rounded-lg overflow-hidden flex-shrink-0";
+        card.innerHTML = `
+          <img src="${url}" class="w-full h-24 object-cover">
+          <div class="p-2 text-[10px] text-slate-400 flex justify-between items-center bg-slate-900">
+            <span>${formatTime(video.currentTime)}</span>
+            <a href="${url}" download="${link.download}" class="p-1 hover:text-white" title="Download">⬇</a>
+          </div>
+        `;
+        snapshotsTray.prepend(card);
+      }, mime, 0.98);
+    });
+
+    btnCopy.addEventListener("click", async () => {
+      const canvas = getFrameCanvas();
+      canvas.toBlob(async (blob) => {
+        try {
+          await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+          btnCopy.textContent = "✓ Copied!";
+          setTimeout(() => { btnCopy.textContent = "📋 Copy"; }, 2000);
+        } catch {
+          alert("Use the 'Grab Frame' button to save the lossless image directly.");
+        }
+      }, "image/png");
+    });
+
+    btnClear.addEventListener("click", () => {
+      video.pause();
+      video.src = "";
+      workspace.classList.add("hidden");
+      dropZone.classList.remove("hidden");
+      snapshotsTray.innerHTML = "";
+      galleryContainer.classList.add("hidden");
+    });
+  </script>
+</body>
 </html>
