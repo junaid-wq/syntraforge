@@ -363,11 +363,10 @@
         const w = sfVideo.videoWidth;
         const h = sfVideo.videoHeight;
         let badge = `${w} × ${h}`;
-        if (w >= 3840 || h >= 2160) badge += " (4K UHD)";
-        else if (w >= 2560 || h >= 1440) badge += " (2K QHD)";
-        else if (w >= 1920 || h >= 1080) badge += " (1080p FHD)";
-        sfResDisplay.textContent = badge;
-      }
+        const maxDim = Math.max(w, h);
+        if (maxDim >= 3840) badge += " (4K UHD)";
+        else if (maxDim >= 2560) badge += " (2K QHD)";
+        else if (maxDim >= 1920) badge += " (1080p FHD)";
     });
   }
 
