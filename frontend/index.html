@@ -33,7 +33,6 @@
     }
   </script>
   <style>
-    /* Prevent layout shifting on ad load */
     .ad-placeholder { min-height: 90px; }
     @media (min-width: 640px) { .ad-placeholder { min-height: 100px; } }
     @media (min-width: 1024px) { .ad-placeholder { min-height: 120px; } }
@@ -91,15 +90,16 @@
         </div>
       </div>
 
-      <!-- Video Player & Extraction Controls (Revealed after video upload) -->
+      <!-- Video Player & Controls -->
       <div id="editorArea" class="hidden space-y-6">
         <div class="flex justify-end pb-2">
-  <button id="resetVideoBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-300 text-xs font-semibold transition-colors cursor-pointer">
-    <span>↺</span> Change Video
-  </button>
-</div>
-<div class="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center border border-slate-800 shadow-inner">
-          <video id="videoPlayer" class="w-full h-full object-contain" playsinline controls></video>
+          <button id="resetVideoBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-300 text-xs font-semibold transition-colors cursor-pointer">
+            <span>↺</span> Change Video
+          </button>
+        </div>
+
+        <div class="relative rounded-xl overflow-hidden bg-black max-h-[600px] flex items-center justify-center border border-slate-800 shadow-inner">
+          <video id="videoPlayer" class="w-full max-h-[600px] object-contain" playsinline controls></video>
           <canvas id="hiddenCanvas" class="hidden"></canvas>
         </div>
 
@@ -108,33 +108,33 @@
           <div class="space-y-1">
             <label class="text-xs text-slate-400">Format</label>
             <select id="formatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="png">PNG (Lossless 24-bit)</option>
+              <option value="png" selected>PNG (Lossless 100%)</option>
               <option value="jpeg">JPEG (High Quality 95%)</option>
               <option value="webp">WebP (Optimized)</option>
             </select>
           </div>
           <div class="space-y-1">
             <label class="text-xs text-slate-400">Resolution</label>
-            <div id="videoResolution" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-400 select-none">
+            <div id="videoResolution" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-indigo-400 font-mono font-medium select-none">
               Auto (Native)
             </div>
           </div>
           <div class="flex items-end">
-            <button id="captureBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm">
+            <button id="captureBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
               <span>📸</span> Capture Frame
             </button>
           </div>
         </div>
 
-        <!-- Captured Frames Output List -->
-        <div id="galleryContainer" class="hidden space-y-4">
+        <!-- Captured Frames Gallery -->
+        <div id="galleryContainer" class="hidden space-y-4 pt-2">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Captured Frames</h3>
           <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
         </div>
       </div>
     </section>
 
-    <!-- AD PLACEMENT ZONE 1: Premium Sponsored Mid-Break -->
+    <!-- AD ZONE 1 -->
     <section class="w-full py-4 px-4 bg-slate-900/40 border border-slate-800/80 rounded-xl text-center">
       <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">SPONSORED</span>
       <div class="ad-placeholder flex items-center justify-center overflow-hidden">
@@ -150,29 +150,29 @@
       </div>
     </section>
 
-    <!-- Feature Grid -->
+    <!-- Features -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
         <div class="text-indigo-400 text-xl font-bold">⚡ Zero Cloud Uploads</div>
         <p class="text-xs text-slate-400 leading-relaxed">
-          Extraction runs client-side via hardware-accelerated HTML5 Canvas and WebGL. Your video never leaves your browser RAM.
+          Extraction runs client-side via hardware-accelerated HTML5 Canvas. Your video never leaves browser memory.
         </p>
       </div>
       <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
         <div class="text-indigo-400 text-xl font-bold">🎯 Sub-Frame Accuracy</div>
         <p class="text-xs text-slate-400 leading-relaxed">
-          Navigate timelines with keyboard arrow stepping to isolate exact motion frames, facial reactions, and high-impact thumbnail moments.
+          Navigate timelines with arrow stepping to isolate exact motion frames, reactions, and high-impact thumbnail moments.
         </p>
       </div>
       <div class="bg-slate-900/30 border border-slate-800/80 rounded-xl p-5 space-y-2">
-        <div class="text-indigo-400 text-xl font-bold">💎 4K Native Quality</div>
+        <div class="text-indigo-400 text-xl font-bold">💎 Lossless Native Quality</div>
         <p class="text-xs text-slate-400 leading-relaxed">
-          Capture still frames up to 3840×2160 pixels with no downsampling, watermark stamps, or artificial compression artifacts.
+          Extract 4K UHD frames (both 3840×2160 and 2160×3840 vertical 9:16) with zero downsampling, stamps, or compression.
         </p>
       </div>
     </section>
 
-    <!-- AD PLACEMENT ZONE 2: In-Article Content Monetization -->
+    <!-- AD ZONE 2 -->
     <section class="w-full py-4 px-4 bg-slate-900/30 border border-slate-800/60 rounded-xl text-center">
       <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">ADVERTISEMENT</span>
       <div class="ad-placeholder flex items-center justify-center overflow-hidden">
@@ -188,7 +188,7 @@
       </div>
     </section>
 
-    <!-- Detailed SEO Guide & FAQ Section (Required for Content Density & Search Indexing) -->
+    <!-- SEO Guide & FAQ -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 sm:p-8">
       <div class="space-y-4">
         <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -196,9 +196,9 @@
         </h2>
         <ol class="space-y-3 text-xs sm:text-sm text-slate-400 list-decimal list-inside leading-relaxed">
           <li><strong class="text-slate-200">Load Video:</strong> Drag any local MP4, WebM, or MOV file into the dropzone.</li>
-          <li><strong class="text-slate-200">Scrub & Seek:</strong> Use native playback or keyboard arrow keys to cue the exact millisecond.</li>
-          <li><strong class="text-slate-200">Choose Format:</strong> Select Lossless PNG for crisp typography/overlays, or JPEG/WebP for compact web assets.</li>
-          <li><strong class="text-slate-200">Export:</strong> Click "Capture Frame" to save the raw dimensions directly to your local downloads.</li>
+          <li><strong class="text-slate-200">Scrub & Seek:</strong> Use native playback or arrow keys to cue the exact millisecond.</li>
+          <li><strong class="text-slate-200">Choose Format:</strong> Select Lossless PNG for pixel-perfect stills, or JPEG/WebP for lighter files.</li>
+          <li><strong class="text-slate-200">Export:</strong> Click "Capture Frame" to save the native dimensions directly to your device.</li>
         </ol>
       </div>
 
@@ -213,13 +213,13 @@
           </div>
           <div>
             <h3 class="font-semibold text-slate-200">What is the maximum resolution supported?</h3>
-            <p class="leading-relaxed">FrameGrab supports full 4K UHD (3840×2160) and high-framerate 60FPS video, limited only by device hardware decoding.</p>
+            <p class="leading-relaxed">FrameGrab supports full 4K UHD (3840×2160 landscape or 2160×3840 vertical 9:16) and 60FPS video.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- AD PLACEMENT ZONE 3: Above-Footer Banner -->
+    <!-- AD ZONE 3 -->
     <section class="w-full py-4 px-4 bg-slate-900/40 border border-slate-800/80 rounded-xl text-center">
       <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono">SPONSORED LINKS</span>
       <div class="ad-placeholder flex items-center justify-center overflow-hidden">
@@ -237,7 +237,7 @@
 
   </main>
 
-  <!-- Footer with Legal & Compliance Modals -->
+  <!-- Footer -->
   <footer class="w-full border-t border-slate-800/80 bg-slate-950 py-8 px-4 mt-8">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
       <p>© 2026 SyntraForge. Client-side browser utilities for creators & editors.</p>
@@ -249,30 +249,28 @@
     </div>
   </footer>
 
-  <!-- Privacy Policy Modal -->
+  <!-- Modals -->
   <div id="modal-privacy" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="text-sm font-bold text-white">Privacy Policy</h3>
         <button onclick="closeModal('modal-privacy')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
       </div>
-      <p>SyntraForge FrameGrab operates as a client-side web application. Video files loaded into the application are parsed exclusively using your local browser APIs and are never transmitted over the internet or stored on external servers.</p>
-      <p>We use third-party monetization tools, including Google AdSense, which may use cookies to serve ads based on user visits to this and other websites on the internet. You can manage personalized advertising preferences via Google Ads Settings.</p>
+      <p>SyntraForge FrameGrab operates client-side. Video files loaded into the application are parsed exclusively using your local browser APIs and are never transmitted over the internet or stored on external servers.</p>
+      <p>We use third-party monetization tools, including Google AdSense, which may use cookies to serve ads based on user visits. You can manage preferences via Google Ads Settings.</p>
     </div>
   </div>
 
-  <!-- Terms Modal -->
   <div id="modal-terms" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <h3 class="text-sm font-bold text-white">Terms of Service</h3>
         <button onclick="closeModal('modal-terms')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
       </div>
-      <p>This software utility is provided "as is", without warranty of any kind. SyntraForge makes no claims regarding fitness for particular workflows. You remain responsible for ensuring you have rights to the media you process.</p>
+      <p>This software utility is provided "as is", without warranty of any kind. You remain responsible for ensuring you have rights to the media you process.</p>
     </div>
   </div>
 
-  <!-- Contact Modal -->
   <div id="modal-contact" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-300">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -284,7 +282,7 @@
     </div>
   </div>
 
-  <!-- Core Video Handling Script -->
+  <!-- Unified, High-Performance Video Extraction Engine -->
   <script>
     const dropzone = document.getElementById('dropzone');
     const videoInput = document.getElementById('videoInput');
@@ -296,6 +294,7 @@
     const resolutionLabel = document.getElementById('videoResolution');
     const galleryContainer = document.getElementById('galleryContainer');
     const galleryGrid = document.getElementById('galleryGrid');
+    const resetBtn = document.getElementById('resetVideoBtn');
 
     dropzone.addEventListener('click', () => videoInput.click());
     dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-indigo-500'); });
@@ -317,75 +316,88 @@
       editorArea.classList.remove('hidden');
 
       videoPlayer.onloadedmetadata = () => {
-        resolutionLabel.textContent = `${videoPlayer.videoWidth} × ${videoPlayer.videoHeight} (${videoPlayer.videoWidth >= 3840 ? '4K' : videoPlayer.videoWidth >= 1920 ? '1080p' : 'HD'})`;
+        const w = videoPlayer.videoWidth;
+        const h = videoPlayer.videoHeight;
+        const maxDim = Math.max(w, h);
+        const minDim = Math.min(w, h);
+
+        let qualityTag = '';
+        if (maxDim >= 3840 || minDim >= 2160) {
+          qualityTag = '(4K UHD)';
+        } else if (maxDim >= 2560 || minDim >= 1440) {
+          qualityTag = '(2K QHD)';
+        } else if (maxDim >= 1920 || minDim >= 1080) {
+          qualityTag = '(1080p FHD)';
+        } else if (maxDim >= 1280 || minDim >= 720) {
+          qualityTag = '(720p HD)';
+        } else {
+          qualityTag = '(SD)';
+        }
+
+        resolutionLabel.textContent = `${w} × ${h} ${qualityTag}`;
       };
     }
 
     captureBtn.addEventListener('click', () => {
-      if (!videoPlayer.videoWidth) return;
+      if (!videoPlayer.videoWidth || !videoPlayer.videoHeight) return;
+
+      // Lock canvas strictly to hardware raw dimensions
       canvas.width = videoPlayer.videoWidth;
       canvas.height = videoPlayer.videoHeight;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d', { alpha: false });
+      
+      // Draw 1:1 unscaled video frame
       ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
 
       const format = formatSelect.value;
-      const mime = format === 'png' ? 'image/png' : format === 'webp' ? 'image/webp' : 'image/jpeg';
-      const dataUrl = canvas.toDataURL(mime, 0.95);
+      let mime = 'image/png';
+      let dataUrl = '';
+
+      if (format === 'jpeg') {
+        mime = 'image/jpeg';
+        dataUrl = canvas.toDataURL(mime, 0.98);
+      } else if (format === 'webp') {
+        mime = 'image/webp';
+        dataUrl = canvas.toDataURL(mime, 0.98);
+      } else {
+        // Pure Lossless PNG (never pass compression parameters)
+        mime = 'image/png';
+        dataUrl = canvas.toDataURL(mime);
+      }
 
       galleryContainer.classList.remove('hidden');
       const item = document.createElement('div');
-      item.className = 'relative group rounded-lg overflow-hidden border border-slate-800 bg-slate-950 aspect-video';
+      item.className = 'relative group rounded-lg overflow-hidden border border-slate-800 bg-slate-950 flex items-center justify-center p-1';
       item.innerHTML = `
-        <img src="${dataUrl}" class="w-full h-full object-cover">
-        <a href="${dataUrl}" download="syntraforge_frame_${Math.floor(videoPlayer.currentTime * 1000)}ms.${format}"
-           class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-xs font-semibold text-white transition-opacity">
-          Save Frame
+        <img src="${dataUrl}" class="w-full h-full object-contain rounded max-h-48">
+        <a href="${dataUrl}" download="syntraforge_frame_${canvas.width}x${canvas.height}_${Math.floor(videoPlayer.currentTime * 1000)}ms.${format}"
+           class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-xs font-semibold text-white transition-opacity gap-1 p-2 text-center">
+          <span>💾 Download Frame</span>
+          <span class="text-[10px] text-slate-300 font-mono">${canvas.width}×${canvas.height}</span>
         </a>
       `;
       galleryGrid.prepend(item);
     });
 
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        videoPlayer.pause();
+        if (videoPlayer.src && videoPlayer.src.startsWith('blob:')) {
+          URL.revokeObjectURL(videoPlayer.src);
+        }
+        videoPlayer.removeAttribute('src');
+        videoPlayer.load();
+        videoInput.value = '';
+        resolutionLabel.textContent = 'Auto (Native)';
+        galleryGrid.innerHTML = '';
+        galleryContainer.classList.add('hidden');
+        editorArea.classList.add('hidden');
+        dropzone.classList.remove('hidden');
+      });
+    }
+
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
   </script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('videoPlayer');
-    const resBox = document.getElementById('videoResolution');
-    const resetBtn = document.getElementById('resetVideoBtn');
-    const dropzone = document.getElementById('dropzone');
-    const editorArea = document.getElementById('editorArea');
-    const input = document.getElementById('videoInput');
-
-    if (video && resBox) {
-      video.addEventListener('loadedmetadata', () => {
-        const w = video.videoWidth;
-        const h = video.videoHeight;
-        const maxDim = Math.max(w, h);
-        let tag = `${w} × ${h}`;
-        if (maxDim >= 3840) tag += " (4K UHD)";
-        else if (maxDim >= 2560) tag += " (2K QHD)";
-        else if (maxDim >= 1920) tag += " (1080p FHD)";
-        resBox.textContent = tag;
-      });
-    }
-
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        if (video) {
-          video.pause();
-          if (video.src && video.src.startsWith('blob:')) {
-            URL.revokeObjectURL(video.src);
-          }
-          video.removeAttribute('src');
-          video.load();
-        }
-        if (input) input.value = '';
-        if (editorArea) editorArea.classList.add('hidden');
-        if (dropzone) dropzone.classList.remove('hidden');
-      });
-    }
-  });
-</script>
 </body>
 </html>
