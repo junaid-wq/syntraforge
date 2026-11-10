@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SyntraForge AudioTrim | Studio-Grade In-Browser Audio Cutter</title>
+  <meta name="description" content="Trim, slice, and cut MP3, WAV, and audio tracks instantly in browser RAM. 100% client-side privacy with zero server uploads.">
+  <link rel="canonical" href="https://syntraforge.me/audio">
+  <meta name="theme-color" content="#0b0f19">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317028384309274" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+    .ad-slot-box { min-height: 90px; }
+    @media (min-width: 640px) { .ad-slot-box { min-height: 100px; } }
+    @media (min-width: 1024px) { .ad-slot-box { min-height: 120px; } }
+    .cyan-glow { box-shadow: 0 0 40px -10px rgba(6, 182, 212, 0.3); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+
+  <!-- Header -->
+  <header class="w-full border-b border-white/10 bg-[#0b0f19]/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="/" class="flex items-center space-x-2.5 group">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-black flex items-center justify-center font-black text-sm shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+            ⚡
+          </div>
+          <span class="text-lg font-black tracking-tight text-white uppercase">
+            SYNTRA<span class="text-cyan-400">FORGE</span> <span class="text-xs font-mono-custom text-slate-400 font-normal">/ AUDIO</span>
+          </span>
+        </a>
+      </div>
+      <div class="flex items-center space-x-3 text-xs font-mono-custom">
+        <a href="/" class="text-slate-400 hover:text-white transition-colors hidden sm:inline-block">[ FrameGrab ]</a>
+        <a href="/compress" class="text-slate-400 hover:text-white transition-colors hidden sm:inline-block">[ Compress ]</a>
+        <a href="/qr" class="text-slate-400 hover:text-white transition-colors hidden sm:inline-block">[ QR ]</a>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px]">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> 100% Client-Side
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero & Workspace -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-10">
+
+    <section class="space-y-3 pt-2 text-center sm:text-left">
+      <div class="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-mono-custom font-bold uppercase tracking-wider">
+        LOSSLESS AUDIO SLICER • WEB AUDIO API
+      </div>
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase">
+        In-Browser <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Audio Cutter.</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-400 max-w-xl font-mono-custom">
+        Slice stems, sound effects, and voice notes with microsecond precision. Zero server processing, 100% private.
+      </p>
+    </section>
+
+    <!-- Workspace Island -->
+    <section class="w-full bg-[#111625] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl cyan-glow space-y-6">
+      
+      <!-- Upload Dropzone -->
+      <div id="audioDropzone" class="border-2 border-dashed border-slate-700 hover:border-cyan-500 rounded-2xl p-8 text-center cursor-pointer transition-colors bg-slate-900/40 group">
+        <input type="file" id="audioFileInput" accept="audio/*" class="hidden">
+        <div class="space-y-2 pointer-events-none">
+          <div class="w-12 h-12 mx-auto rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+            🎵
+          </div>
+          <div class="text-sm font-bold text-slate-200">Click or drag an audio file (MP3, WAV, AAC, OGG)</div>
+          <p class="text-xs text-slate-500 font-mono-custom">Direct memory decode • Zero cloud transfer</p>
+        </div>
+      </div>
+
+      <!-- Waveform Canvas Display -->
+      <div id="editorWorkspace" class="hidden space-y-6">
+        <div class="bg-slate-950 p-4 rounded-2xl border border-white/10 space-y-3">
+          <div class="flex justify-between items-center text-xs font-mono-custom text-slate-400">
+            <span id="audioTrackName" class="truncate max-w-xs text-cyan-400 font-bold">track.mp3</span>
+            <span id="audioDuration">00:00.00</span>
+          </div>
+          <canvas id="waveformCanvas" class="w-full h-32 rounded-xl bg-slate-900 cursor-crosshair"></canvas>
+          <div class="flex justify-between items-center text-[11px] font-mono-custom text-slate-500">
+            <span>0.00s</span>
+            <span id="currentPlayTime" class="text-cyan-400 font-bold">0.00s</span>
+            <span id="totalDurationLabel">0.00s</span>
+          </div>
+        </div>
+
+        <!-- Controls Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5 space-y-1">
+            <label class="text-[10px] font-mono-custom uppercase tracking-wider text-slate-400">Start Offset (s)</label>
+            <input type="number" id="startTimeInput" step="0.1" min="0" value="0.0" class="w-full bg-slate-950 border border-white/10 focus:border-cyan-500 rounded-xl px-3 py-2 text-sm text-white font-mono-custom outline-none">
+          </div>
+          <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5 space-y-1">
+            <label class="text-[10px] font-mono-custom uppercase tracking-wider text-slate-400">End Cut (s)</label>
+            <input type="number" id="endTimeInput" step="0.1" min="0" value="0.0" class="w-full bg-slate-950 border border-white/10 focus:border-cyan-500 rounded-xl px-3 py-2 text-sm text-white font-mono-custom outline-none">
+          </div>
+          <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5 space-y-1">
+            <label class="text-[10px] font-mono-custom uppercase tracking-wider text-slate-400">Export Format</label>
+            <select id="exportFormat" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-sm text-white font-mono-custom outline-none">
+              <option value="wav">WAV (Studio Lossless 16-Bit)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <button id="playBtn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-mono-custom font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+            <span>▶</span> Preview Cut
+          </button>
+          <button id="downloadBtn" class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-mono-custom font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-[0.98]">
+            <span>💾</span> Download Trimmed Audio
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- AD PLACEMENT 1 -->
+    <section class="w-full py-4 px-4 bg-[#111625] border border-white/10 rounded-2xl text-center">
+      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono-custom">SPONSORED PLATFORM</span>
+      <div class="ad-slot-box flex items-center justify-center overflow-hidden">
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;" data-ad-client="ca-pub-4317028384309274" data-ad-slot="9876543210" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+
+    <!-- Specs Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono-custom">
+      <div class="bg-[#111625] border border-white/10 rounded-2xl p-5 space-y-2">
+        <div class="text-cyan-400 text-xs font-bold uppercase tracking-wider">// LOCAL BUFFERING</div>
+        <h3 class="text-white text-sm font-bold">100% Private</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">No audio samples are uploaded to external clouds. Processing runs directly in your local CPU memory.</p>
+      </div>
+      <div class="bg-[#111625] border border-white/10 rounded-2xl p-5 space-y-2">
+        <div class="text-blue-400 text-xs font-bold uppercase tracking-wider">// ACCURACY</div>
+        <h3 class="text-white text-sm font-bold">Sub-Second Trimming</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Trim ringtones, podcast intro tags, and viral TikTok audio cuts without quality loss.</p>
+      </div>
+      <div class="bg-[#111625] border border-white/10 rounded-2xl p-5 space-y-2">
+        <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider">// ZERO PAYWALLS</div>
+        <h3 class="text-white text-sm font-bold">Free Forever</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">No sign-up barriers, subscription fees, or file count limitations.</p>
+      </div>
+    </section>
+
+    <!-- AD PLACEMENT 2 -->
+    <section class="w-full py-4 px-4 bg-[#111625] border border-white/10 rounded-2xl text-center">
+      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono-custom">ADVERTISEMENT</span>
+      <div class="ad-slot-box flex items-center justify-center overflow-hidden">
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;" data-ad-client="ca-pub-4317028384309274" data-ad-slot="9876543211" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+  </main>
+
+  <footer class="w-full border-t border-white/10 bg-[#070a12] py-8 px-4 font-mono-custom text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 SyntraForge. Built for creator workflows.</p>
+      <div class="flex items-center space-x-6">
+        <a href="/" class="hover:text-cyan-400 transition-colors">FrameGrab</a>
+        <a href="/compress" class="hover:text-cyan-400 transition-colors">ImageStudio</a>
+        <a href="/qr" class="hover:text-cyan-400 transition-colors">QRStudio</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const dropzone = document.getElementById('audioDropzone');
+    const fileInput = document.getElementById('audioFileInput');
+    const editorWorkspace = document.getElementById('editorWorkspace');
+    const waveformCanvas = document.getElementById('waveformCanvas');
+    const audioTrackName = document.getElementById('audioTrackName');
+    const audioDuration = document.getElementById('audioDuration');
+    const startTimeInput = document.getElementById('startTimeInput');
+    const endTimeInput = document.getElementById('endTimeInput');
+    const playBtn = document.getElementById('playBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let audioCtx = null;
+    let audioBuffer = null;
+    let currentSource = null;
+    let isPlaying = false;
+    let originalFileName = 'track';
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-cyan-500'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-cyan-500'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-cyan-500');
+      if (e.dataTransfer.files.length) handleAudioFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) handleAudioFile(e.target.files[0]);
+    });
+
+    async function handleAudioFile(file) {
+      originalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || 'track';
+      audioTrackName.textContent = file.name;
+      dropzone.classList.add('hidden');
+      editorWorkspace.classList.remove('hidden');
+
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const arrayBuffer = await file.arrayBuffer();
+      audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+      const dur = audioBuffer.duration;
+      audioDuration.textContent = formatTime(dur);
+      document.getElementById('totalDurationLabel').textContent = dur.toFixed(2) + 's';
+      startTimeInput.value = '0.0';
+      endTimeInput.value = dur.toFixed(1);
+      endTimeInput.max = dur;
+
+      drawWaveform();
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = (sec % 60).toFixed(2);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function drawWaveform() {
+      const width = waveformCanvas.width = waveformCanvas.offsetWidth;
+      const height = waveformCanvas.height = waveformCanvas.offsetHeight;
+      const ctx = waveformCanvas.getContext('2d');
+      const data = audioBuffer.getChannelData(0);
+      const step = Math.ceil(data.length / width);
+      const amp = height / 2;
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = '#06b6d4';
+      for (let i = 0; i < width; i++) {
+        let min = 1.0;
+        let max = -1.0;
+        for (let j = 0; j < step; j++) {
+          const datum = data[(i * step) + j];
+          if (datum < min) min = datum;
+          if (datum > max) max = datum;
+        }
+        ctx.fillRect(i, (1 + min) * amp, 1, Math.max(1, (max - min) * amp));
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        if (currentSource) currentSource.stop();
+        isPlaying = false;
+        playBtn.innerHTML = '<span>▶</span> Preview Cut';
+        return;
+      }
+
+      const start = parseFloat(startTimeInput.value) || 0;
+      const end = parseFloat(endTimeInput.value) || audioBuffer.duration;
+      const duration = Math.max(0, end - start);
+
+      currentSource = audioCtx.createBufferSource();
+      currentSource.buffer = audioBuffer;
+      currentSource.connect(audioCtx.destination);
+      currentSource.start(0, start, duration);
+      isPlaying = true;
+      playBtn.innerHTML = '<span>⏹</span> Stop Preview';
+
+      currentSource.onended = () => {
+        isPlaying = false;
+        playBtn.innerHTML = '<span>▶</span> Preview Cut';
+      };
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const start = parseFloat(startTimeInput.value) || 0;
+      const end = parseFloat(endTimeInput.value) || audioBuffer.duration;
+      const sampleRate = audioBuffer.sampleRate;
+      const channels = audioBuffer.numberOfChannels;
+      const startOffset = Math.floor(start * sampleRate);
+      const endOffset = Math.floor(end * sampleRate);
+      const frameCount = Math.max(0, endOffset - startOffset);
+
+      const trimmedBuffer = audioCtx.createBuffer(channels, frameCount, sampleRate);
+      for (let i = 0; i < channels; i++) {
+        trimmedBuffer.copyToChannel(audioBuffer.getChannelData(i).subarray(startOffset, endOffset), i);
+      }
+
+      const wavBlob = bufferToWave(trimmedBuffer, frameCount);
+      const url = URL.createObjectURL(wavBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${originalFileName}_trimmed.wav`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    function bufferToWave(abuffer, len) {
+      let numOfChan = abuffer.numberOfChannels,
+          length = len * numOfChan * 2 + 44,
+          buffer = new ArrayBuffer(length),
+          view = new DataView(buffer),
+          channels = [], i, sample,
+          offset = 0,
+          pos = 0;
+
+      function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+      function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+
+      setUint32(0x46464952); // "RIFF"
+      setUint32(length - 8);
+      setUint32(0x45564157); // "WAVE"
+      setUint32(0x20746d66); // "fmt "
+      setUint32(16);
+      setUint16(1); // PCM
+      setUint16(numOfChan);
+      setUint32(abuffer.sampleRate);
+      setUint32(abuffer.sampleRate * 2 * numOfChan);
+      setUint16(numOfChan * 2);
+      setUint16(16); // 16-bit
+      setUint32(0x61746164); // "data"
+      setUint32(length - pos - 4);
+
+      for (i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
+      while (pos < length) {
+        for (i = 0; i < numOfChan; i++) {
+          sample = Math.max(-1, Math.min(1, channels[i][offset]));
+          sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+          view.setInt16(pos, sample, true);
+          pos += 2;
+        }
+        offset++;
+      }
+      return new Blob([buffer], { type: "audio/wav" });
+    }
+  </script>
+</body>
+</html>
