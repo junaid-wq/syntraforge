@@ -1,0 +1,368 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SyntraForge QR Studio | Free Permanent Static QR Code Generator</title>
+  <meta name="description" content="Generate 100% permanent, static, custom vector QR codes for URLs, Wi-Fi, and text. Zero registration, no expiration dates, and 100% client-side privacy.">
+  <link rel="canonical" href="https://syntraforge.me/qr">
+  <meta name="theme-color" content="#0d0d0f">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4317028384309274" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700;800&display=swap');
+    body { font-family: 'Space Grotesk', sans-serif; background-color: #0d0d0f; color: #f1f1f5; }
+    .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+    .cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+    .ad-slot-box { min-height: 90px; }
+    @media (min-width: 640px) { .ad-slot-box { min-height: 100px; } }
+    @media (min-width: 1024px) { .ad-slot-box { min-height: 120px; } }
+    .tape-badge { display: inline-block; background: #ff3366; color: #fff; transform: skew(-4deg); padding: 2px 10px; font-weight: 900; }
+    .tunnel-container { background: radial-gradient(circle at center, #1b1b22 0%, #0d0d0f 75%); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#ff3366] selection:text-white cyber-grid overflow-x-hidden">
+  <header class="w-full border-b border-white/10 bg-[#0d0d0f]/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="/" class="flex items-center space-x-2.5 group">
+          <div class="w-8 h-8 rounded bg-[#ff3366] text-white flex items-center justify-center font-black text-sm shadow-lg shadow-[#ff3366]/30 group-hover:rotate-6 transition-transform">⚡</div>
+          <span class="text-lg font-black tracking-tighter text-white uppercase">SYNTRA<span class="text-[#ff3366]">FORGE</span> <span class="text-xs font-mono-custom text-slate-400 font-normal">/ QR</span></span>
+        </a>
+      </div>
+      <div class="flex items-center space-x-4 text-xs font-mono-custom">
+        <a href="/" class="text-slate-400 hover:text-white transition-colors hidden sm:inline-block">[ FrameGrab ]</a>
+        <a href="/compress" class="text-slate-400 hover:text-white transition-colors hidden sm:inline-block">[ Compress ]</a>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-white/5 border border-white/10 text-emerald-400 text-[11px]">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> STATIC • NO EXPIRY
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 flex flex-col gap-10">
+    <section class="space-y-3 pt-2">
+      <div class="flex items-center gap-2">
+        <span class="tape-badge text-xs uppercase tracking-widest">PERMANENT ENGINE</span>
+        <span class="text-xs font-mono-custom text-slate-400 uppercase tracking-widest">// ZERO EXCLUSIONS • 100% IN-BROWSER</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase leading-[0.95]">
+        STATIC QR <br class="hidden sm:inline">
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">ARCHITECT.</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-400 max-w-xl font-mono-custom">
+        Generate un-expiring, vector-sharp QR codes. No monthly subscriptions, no hijacked redirect links, zero server-side telemetry.
+      </p>
+    </section>
+
+    <section class="w-full bg-[#121217] border border-white/10 rounded-2xl p-5 sm:p-8 shadow-2xl shadow-black relative overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="space-y-2">
+            <label class="text-[11px] font-mono-custom uppercase tracking-wider text-slate-400">// 01. SELECT PAYLOAD TYPE</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" id="tab-url" class="tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-[#ff3366] bg-[#ff3366] text-white transition-all text-center">Website URL</button>
+              <button type="button" id="tab-wifi" class="tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all text-center">Wi-Fi Network</button>
+              <button type="button" id="tab-text" class="tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all text-center">Plain Text</button>
+            </div>
+          </div>
+
+          <div class="space-y-4 pt-1">
+            <label class="text-[11px] font-mono-custom uppercase tracking-wider text-slate-400">// 02. PAYLOAD SPECIFICATION</label>
+            <div id="panel-url" class="space-y-2">
+              <input type="url" id="inputUrl" placeholder="https://syntraforge.me" value="https://syntraforge.me" class="w-full bg-[#0d0d0f] border border-white/15 focus:border-[#ff3366] rounded-xl px-4 py-3 text-sm text-white font-mono-custom outline-none transition-colors">
+              <p class="text-[11px] text-slate-500 font-mono-custom">Static permanent link. Scanners directly open destination with no intermediate reroutes.</p>
+            </div>
+            <div id="panel-wifi" class="hidden space-y-3">
+              <input type="text" id="wifiSsid" placeholder="Network SSID (WiFi Name)" class="w-full bg-[#0d0d0f] border border-white/15 focus:border-[#ff3366] rounded-xl px-4 py-2.5 text-sm text-white font-mono-custom outline-none transition-colors">
+              <input type="text" id="wifiPass" placeholder="Password" class="w-full bg-[#0d0d0f] border border-white/15 focus:border-[#ff3366] rounded-xl px-4 py-2.5 text-sm text-white font-mono-custom outline-none transition-colors">
+              <select id="wifiAuth" class="w-full bg-[#0d0d0f] border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-mono-custom outline-none">
+                <option value="WPA">WPA/WPA2/WPA3 (Standard)</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">No Password (Open)</option>
+              </select>
+            </div>
+            <div id="panel-text" class="hidden space-y-2">
+              <textarea id="inputText" rows="3" placeholder="Enter custom message, notes, crypto address, or SKU code..." class="w-full bg-[#0d0d0f] border border-white/15 focus:border-[#ff3366] rounded-xl px-4 py-3 text-sm text-white font-mono-custom outline-none transition-colors resize-none"></textarea>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <label class="text-[11px] font-mono-custom uppercase tracking-wider text-slate-400">// 03. COLOR CALIBRATION</label>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="flex items-center justify-between p-3 rounded-xl bg-[#0d0d0f] border border-white/10">
+                <span class="text-xs font-mono-custom text-slate-300">Foreground</span>
+                <input type="color" id="fgColor" value="#0d0d0f" class="w-8 h-8 rounded border-0 cursor-pointer bg-transparent">
+              </div>
+              <div class="flex items-center justify-between p-3 rounded-xl bg-[#0d0d0f] border border-white/10">
+                <span class="text-xs font-mono-custom text-slate-300">Background</span>
+                <input type="color" id="bgColor" value="#ffffff" class="w-8 h-8 rounded border-0 cursor-pointer bg-transparent">
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-1.5 pt-1">
+            <label class="text-[11px] font-mono-custom uppercase tracking-wider text-slate-400">// 04. REDUNDANCY / ECC LEVEL</label>
+            <select id="eccLevel" class="w-full bg-[#0d0d0f] border border-white/15 focus:border-[#ff3366] rounded-xl px-3 py-2 text-xs text-white font-mono-custom outline-none">
+              <option value="H" selected>High (30% Damage Recovery - Ideal for Print)</option>
+              <option value="Q">Quartile (25% Damage Recovery)</option>
+              <option value="M">Medium (15% Recovery - Standard)</option>
+              <option value="L">Low (7% Recovery - Maximum Dense Data)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-[#0d0d0f] border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-between space-y-6">
+          <div class="w-full flex items-center justify-between border-b border-white/10 pb-3 font-mono-custom text-xs">
+            <span class="text-slate-400 uppercase tracking-widest">// VIEWPORT</span>
+            <span class="text-[#ff3366] font-bold">1024 x 1024 CANVAS</span>
+          </div>
+
+          <div class="tunnel-container w-full aspect-square rounded-xl border border-white/10 flex items-center justify-center p-6 shadow-inner">
+            <div id="qrcode" class="p-3 rounded-xl bg-white shadow-2xl transition-transform hover:scale-105 duration-200"></div>
+          </div>
+
+          <div class="w-full bg-white/5 border border-white/5 rounded-lg p-2.5">
+            <span class="text-[10px] font-mono-custom uppercase tracking-widest text-slate-500 block">ENCODED STRING</span>
+            <p id="stringPreview" class="text-xs font-mono-custom text-slate-300 truncate">https://syntraforge.me</p>
+          </div>
+
+          <div class="w-full space-y-2 pt-2">
+            <button id="downloadPngBtn" class="w-full bg-[#ff3366] hover:bg-[#ff1a53] text-white font-black font-mono-custom py-3.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#ff3366]/25 active:scale-[0.98]">
+              <span>💾</span> DOWNLOAD HIGH-RES PNG
+            </button>
+            <button id="copySvgBtn" class="w-full bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 font-bold font-mono-custom py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+              <span>📋</span> COPY ENCODED STRING
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="w-full py-4 px-4 bg-[#121217] border border-white/10 rounded-2xl text-center">
+      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono-custom">SPONSORED INFRASTRUCTURE</span>
+      <div class="ad-slot-box flex items-center justify-center overflow-hidden">
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;" data-ad-client="ca-pub-4317028384309274" data-ad-slot="9876543210" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono-custom">
+      <div class="bg-[#121217] border border-white/10 rounded-xl p-5 space-y-2">
+        <div class="text-[#ff3366] text-xs font-bold uppercase tracking-wider">// NO EXPIRATION</div>
+        <h3 class="text-white text-sm font-bold">Forever Valid</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">No 14-day trials or hidden expirations. Raw data stays permanently readable by any optical scanner.</p>
+      </div>
+      <div class="bg-[#121217] border border-white/10 rounded-xl p-5 space-y-2">
+        <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider">// PRIVACY IS PROTOCOL</div>
+        <h3 class="text-white text-sm font-bold">Zero Telemetry</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Generated inside client RAM. No server calls or IP trackers intercept your generated payloads.</p>
+      </div>
+      <div class="bg-[#121217] border border-white/10 rounded-xl p-5 space-y-2">
+        <div class="text-purple-400 text-xs font-bold uppercase tracking-wider">// VECTOR READY</div>
+        <h3 class="text-white text-sm font-bold">Print Grade</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Configured with high error correction so codes scan reliably on business cards, menus, or posters.</p>
+      </div>
+    </section>
+
+    <section class="w-full py-4 px-4 bg-[#121217] border border-white/10 rounded-2xl text-center">
+      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono-custom">ADVERTISEMENT</span>
+      <div class="ad-slot-box flex items-center justify-center overflow-hidden">
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;" data-ad-client="ca-pub-4317028384309274" data-ad-slot="9876543211" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#121217] border border-white/10 rounded-2xl p-6 sm:p-8 font-mono-custom">
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-white uppercase tracking-wider text-[#ff3366]">// PROTOCOL DOCUMENTATION</h2>
+        <div class="space-y-2.5 text-xs text-slate-400 leading-relaxed">
+          <p><strong class="text-slate-200">Static vs Dynamic QR:</strong> Dynamic QRs redirect through third-party servers. If the host closes, the QR dies. Static QRs encode straight to the matrix permanently.</p>
+          <p><strong class="text-slate-200">Contrast Notice:</strong> Maintain high contrast between foreground and background colors to guarantee scan reliability.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-white uppercase tracking-wider text-[#ff3366]">// FREQUENTLY RESOLVED</h2>
+        <div class="space-y-3 text-xs text-slate-400">
+          <div>
+            <h3 class="font-bold text-slate-200">Can I use these commercially?</h3>
+            <p class="leading-relaxed">Yes. 100% royalty-free for commercial packaging, menus, apps, and marketing campaigns.</p>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-200">How do Wi-Fi QRs work?</h3>
+            <p class="leading-relaxed">Scanning the code prompts iOS and Android devices to automatically join the network without manual typing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="w-full py-4 px-4 bg-[#121217] border border-white/10 rounded-2xl text-center">
+      <span class="text-[10px] uppercase tracking-widest text-slate-500 block mb-2 font-mono-custom">SPONSORED ARCHITECTURE</span>
+      <div class="ad-slot-box flex items-center justify-center overflow-hidden">
+        <ins class="adsbygoogle" style="display:block; width:100%; text-align:center;" data-ad-client="ca-pub-4317028384309274" data-ad-slot="9876543212" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+  </main>
+
+  <footer class="w-full border-t border-white/10 bg-[#0a0a0c] py-8 px-4 mt-8 font-mono-custom">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 SyntraForge. Engineered for zero data retention.</p>
+      <div class="flex items-center space-x-6">
+        <button onclick="openModal('modal-privacy')" class="hover:text-white transition-colors">Privacy Policy</button>
+        <button onclick="openModal('modal-terms')" class="hover:text-white transition-colors">Terms of Service</button>
+        <button onclick="openModal('modal-contact')" class="hover:text-white transition-colors">Contact</button>
+      </div>
+    </div>
+  </footer>
+
+  <div id="modal-privacy" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 font-mono-custom">
+    <div class="bg-[#121217] border border-white/10 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-400">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+        <h3 class="text-sm font-bold text-white uppercase">// PRIVACY PROTOCOL</h3>
+        <button onclick="closeModal('modal-privacy')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+      </div>
+      <p>SyntraForge QR Studio executes generation purely in local device RAM using client-side JavaScript. No payload data is stored on remote servers.</p>
+      <p>Third-party advertising partners (Google AdSense) may set cookies for programmatic advertising display. You may manage these via browser preferences or Google Ad Settings.</p>
+    </div>
+  </div>
+
+  <div id="modal-terms" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 font-mono-custom">
+    <div class="bg-[#121217] border border-white/10 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-400">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+        <h3 class="text-sm font-bold text-white uppercase">// TERMS OF OPERATION</h3>
+        <button onclick="closeModal('modal-terms')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+      </div>
+      <p>This generator is provided royalty-free. The user is responsible for verifying QR scanability before mass printing.</p>
+    </div>
+  </div>
+
+  <div id="modal-contact" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 font-mono-custom">
+    <div class="bg-[#121217] border border-white/10 max-w-lg w-full rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs text-slate-400">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+        <h3 class="text-sm font-bold text-white uppercase">// SYSTEM CONTACT</h3>
+        <button onclick="closeModal('modal-contact')" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+      </div>
+      <p>Inquiries, protocol issues, or suggestions:</p>
+      <p class="text-[#ff3366] bg-white/5 p-2 rounded border border-white/10">contact@syntraforge.me</p>
+    </div>
+  </div>
+
+  <script>
+    let currentMode = 'url';
+    const qrcodeContainer = document.getElementById('qrcode');
+    const stringPreview = document.getElementById('stringPreview');
+    const fgColorInput = document.getElementById('fgColor');
+    const bgColorInput = document.getElementById('bgColor');
+    const eccSelect = document.getElementById('eccLevel');
+    const inputUrl = document.getElementById('inputUrl');
+    const wifiSsid = document.getElementById('wifiSsid');
+    const wifiPass = document.getElementById('wifiPass');
+    const wifiAuth = document.getElementById('wifiAuth');
+    const inputText = document.getElementById('inputText');
+
+    function getPayload() {
+      if (currentMode === 'url') {
+        return inputUrl.value.trim() || 'https://syntraforge.me';
+      } else if (currentMode === 'wifi') {
+        const ssid = wifiSsid.value.trim() || 'Network';
+        const pass = wifiPass.value.trim();
+        const auth = wifiAuth.value;
+        return `WIFI:S:${ssid};T:${auth};P:${pass};;`;
+      } else {
+        return inputText.value.trim() || 'SyntraForge';
+      }
+    }
+
+    function renderQR() {
+      const payload = getPayload();
+      stringPreview.textContent = payload;
+      qrcodeContainer.innerHTML = '';
+      const eccMap = {
+        'L': QRCode.CorrectLevel.L,
+        'M': QRCode.CorrectLevel.M,
+        'Q': QRCode.CorrectLevel.Q,
+        'H': QRCode.CorrectLevel.H
+      };
+      new QRCode(qrcodeContainer, {
+        text: payload,
+        width: 256,
+        height: 256,
+        colorDark: fgColorInput.value,
+        colorLight: bgColorInput.value,
+        correctLevel: eccMap[eccSelect.value] || QRCode.CorrectLevel.H
+      });
+    }
+
+    const tabUrl = document.getElementById('tab-url');
+    const tabWifi = document.getElementById('tab-wifi');
+    const tabText = document.getElementById('tab-text');
+    const panelUrl = document.getElementById('panel-url');
+    const panelWifi = document.getElementById('panel-wifi');
+    const panelText = document.getElementById('panel-text');
+
+    function setTab(mode) {
+      currentMode = mode;
+      [tabUrl, tabWifi, tabText].forEach(t => {
+        t.className = "tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all text-center";
+      });
+      [panelUrl, panelWifi, panelText].forEach(p => p.classList.add('hidden'));
+
+      if (mode === 'url') {
+        tabUrl.className = "tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-[#ff3366] bg-[#ff3366] text-white transition-all text-center";
+        panelUrl.classList.remove('hidden');
+      } else if (mode === 'wifi') {
+        tabWifi.className = "tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-[#ff3366] bg-[#ff3366] text-white transition-all text-center";
+        panelWifi.classList.remove('hidden');
+      } else {
+        tabText.className = "tab-btn py-2.5 px-3 text-xs font-mono-custom font-bold uppercase rounded border border-[#ff3366] bg-[#ff3366] text-white transition-all text-center";
+        panelText.classList.remove('hidden');
+      }
+      renderQR();
+    }
+
+    tabUrl.addEventListener('click', () => setTab('url'));
+    tabWifi.addEventListener('click', () => setTab('wifi'));
+    tabText.addEventListener('click', () => setTab('text'));
+
+    [inputUrl, wifiSsid, wifiPass, wifiAuth, inputText, fgColorInput, bgColorInput, eccSelect].forEach(el => {
+      el.addEventListener('input', renderQR);
+      el.addEventListener('change', renderQR);
+    });
+
+    document.getElementById('downloadPngBtn').addEventListener('click', () => {
+      const qrCanvas = qrcodeContainer.querySelector('canvas');
+      const qrImg = qrcodeContainer.querySelector('img');
+      let src = '';
+      if (qrCanvas) src = qrCanvas.toDataURL('image/png');
+      else if (qrImg) src = qrImg.src;
+      if (!src) return;
+      const a = document.createElement('a');
+      a.href = src;
+      a.download = `syntraforge_qr_${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    document.getElementById('copySvgBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(getPayload()).then(() => {
+        const originalText = document.getElementById('copySvgBtn').innerHTML;
+        document.getElementById('copySvgBtn').innerHTML = '<span>✅</span> COPIED TO CLIPBOARD';
+        setTimeout(() => { document.getElementById('copySvgBtn').innerHTML = originalText; }, 1800);
+      });
+    });
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    window.addEventListener('DOMContentLoaded', renderQR);
+  </script>
+</body>
+</html>
