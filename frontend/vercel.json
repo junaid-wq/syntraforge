@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "frame.syntraforge.me" }], "destination": "/sitemaps/frame.xml" },
+    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "image.syntraforge.me" }], "destination": "/sitemaps/image.xml" },
+    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "qr.syntraforge.me" }], "destination": "/sitemaps/qr.xml" },
+    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "audio.syntraforge.me" }], "destination": "/sitemaps/audio.xml" },
+    { "source": "/", "has": [{ "type": "host", "value": "image.syntraforge.me" }], "destination": "/compress/index.html" },
+    { "source": "/", "has": [{ "type": "host", "value": "qr.syntraforge.me" }], "destination": "/qr/index.html" },
+    { "source": "/", "has": [{ "type": "host", "value": "audio.syntraforge.me" }], "destination": "/audio/index.html" }
+  ]
+}
