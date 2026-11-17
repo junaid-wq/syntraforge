@@ -1,11 +1,42 @@
 {
-  "rewrites": [
-    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "frame.syntraforge.me" }], "destination": "/sitemaps/frame.xml" },
-    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "image.syntraforge.me" }], "destination": "/sitemaps/image.xml" },
-    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "qr.syntraforge.me" }], "destination": "/sitemaps/qr.xml" },
-    { "source": "/sitemap.xml", "has": [{ "type": "host", "value": "audio.syntraforge.me" }], "destination": "/sitemaps/audio.xml" },
-    { "source": "/", "has": [{ "type": "host", "value": "image.syntraforge.me" }], "destination": "/compress/index.html" },
-    { "source": "/", "has": [{ "type": "host", "value": "qr.syntraforge.me" }], "destination": "/qr/index.html" },
-    { "source": "/", "has": [{ "type": "host", "value": "audio.syntraforge.me" }], "destination": "/audio/index.html" }
+  "routes": [
+    {
+      "src": "^/sitemap\\.xml$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/sitemaps/frame.xml"
+    },
+    {
+      "src": "^/sitemap\\.xml$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/sitemaps/image.xml"
+    },
+    {
+      "src": "^/sitemap\\.xml$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/sitemaps/qr.xml"
+    },
+    {
+      "src": "^/sitemap\\.xml$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/sitemaps/audio.xml"
+    },
+    {
+      "src": "^/$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/index.html"
+    },
+    {
+      "src": "^/$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/index.html"
+    },
+    {
+      "src": "^/$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/index.html"
+    },
+    {
+      "handle": "filesystem"
+    }
   ]
 }
