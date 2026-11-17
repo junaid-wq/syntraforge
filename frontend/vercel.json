@@ -36,6 +36,406 @@
       "dest": "/audio/index.html"
     },
     {
+      "src": "^/mp4-to-png$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-mp4-to-png.html"
+    },
+    {
+      "src": "^/mov-to-jpg$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-mov-to-jpg.html"
+    },
+    {
+      "src": "^/4k-video-frame-extractor$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-4k-video-frame-extractor.html"
+    },
+    {
+      "src": "^/youtube-thumbnail-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-youtube-thumbnail-grabber.html"
+    },
+    {
+      "src": "^/webm-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-webm-frame-grabber.html"
+    },
+    {
+      "src": "^/video-to-image-sequence$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-video-to-image-sequence.html"
+    },
+    {
+      "src": "^/extract-frame-at-timestamp$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-extract-frame-at-timestamp.html"
+    },
+    {
+      "src": "^/reels-cover-extractor$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-reels-cover-extractor.html"
+    },
+    {
+      "src": "^/tiktok-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-tiktok-frame-grabber.html"
+    },
+    {
+      "src": "^/gopro-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-gopro-frame-grabber.html"
+    },
+    {
+      "src": "^/drone-video-still-capture$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-drone-video-still-capture.html"
+    },
+    {
+      "src": "^/mkv-frame-extractor$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-mkv-frame-extractor.html"
+    },
+    {
+      "src": "^/screen-recording-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-screen-recording-frame-grabber.html"
+    },
+    {
+      "src": "^/freeze-frame-saver$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-freeze-frame-saver.html"
+    },
+    {
+      "src": "^/gaming-clip-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-gaming-clip-frame-grabber.html"
+    },
+    {
+      "src": "^/lecture-slide-frame-extractor$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-lecture-slide-frame-extractor.html"
+    },
+    {
+      "src": "^/iphone-video-to-photo$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-iphone-video-to-photo.html"
+    },
+    {
+      "src": "^/video-to-wallpaper$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-video-to-wallpaper.html"
+    },
+    {
+      "src": "^/no-upload-video-frame-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-no-upload-video-frame-grabber.html"
+    },
+    {
+      "src": "^/premiere-reference-still-grabber$",
+      "has": [{ "type": "host", "value": "frame.syntraforge.me" }],
+      "dest": "/p-frame-premiere-reference-still-grabber.html"
+    },
+    {
+      "src": "^/compress-under-100kb$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/compress-under-100kb.html"
+    },
+    {
+      "src": "^/compress-under-50kb$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/compress-under-50kb.html"
+    },
+    {
+      "src": "^/compress-under-20kb$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/compress-under-20kb.html"
+    },
+    {
+      "src": "^/png-to-webp$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/png-to-webp.html"
+    },
+    {
+      "src": "^/jpg-to-webp$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/jpg-to-webp.html"
+    },
+    {
+      "src": "^/webp-to-png$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/webp-to-png.html"
+    },
+    {
+      "src": "^/webp-to-jpg$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/webp-to-jpg.html"
+    },
+    {
+      "src": "^/png-to-jpg$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/png-to-jpg.html"
+    },
+    {
+      "src": "^/jpg-to-png$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/jpg-to-png.html"
+    },
+    {
+      "src": "^/bulk-image-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/bulk-image-compressor.html"
+    },
+    {
+      "src": "^/passport-photo-size-reducer$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/passport-photo-size-reducer.html"
+    },
+    {
+      "src": "^/shopify-image-optimizer$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/shopify-image-optimizer.html"
+    },
+    {
+      "src": "^/amazon-listing-image-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/amazon-listing-image-compressor.html"
+    },
+    {
+      "src": "^/youtube-thumbnail-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/youtube-thumbnail-compressor.html"
+    },
+    {
+      "src": "^/whatsapp-hd-image-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/whatsapp-hd-image-compressor.html"
+    },
+    {
+      "src": "^/discord-image-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/discord-image-compressor.html"
+    },
+    {
+      "src": "^/lossless-png-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/lossless-png-compressor.html"
+    },
+    {
+      "src": "^/website-speed-image-optimizer$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/website-speed-image-optimizer.html"
+    },
+    {
+      "src": "^/no-upload-image-compressor$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/no-upload-image-compressor.html"
+    },
+    {
+      "src": "^/reduce-image-mb-to-kb$",
+      "has": [{ "type": "host", "value": "image.syntraforge.me" }],
+      "dest": "/compress/reduce-image-mb-to-kb.html"
+    },
+    {
+      "src": "^/wifi-qr-code-generator$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/wifi-qr-code-generator.html"
+    },
+    {
+      "src": "^/upi-qr-code-generator$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/upi-qr-code-generator.html"
+    },
+    {
+      "src": "^/vcard-qr-code-maker$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/vcard-qr-code-maker.html"
+    },
+    {
+      "src": "^/whatsapp-link-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/whatsapp-link-qr-code.html"
+    },
+    {
+      "src": "^/restaurant-menu-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/restaurant-menu-qr-code.html"
+    },
+    {
+      "src": "^/svg-vector-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/svg-vector-qr-code.html"
+    },
+    {
+      "src": "^/qr-code-with-logo$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/qr-code-with-logo.html"
+    },
+    {
+      "src": "^/google-review-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/google-review-qr-code.html"
+    },
+    {
+      "src": "^/instagram-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/instagram-qr-code.html"
+    },
+    {
+      "src": "^/youtube-channel-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/youtube-channel-qr-code.html"
+    },
+    {
+      "src": "^/permanent-static-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/permanent-static-qr-code.html"
+    },
+    {
+      "src": "^/transparent-png-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/transparent-png-qr-code.html"
+    },
+    {
+      "src": "^/business-card-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/business-card-qr-code.html"
+    },
+    {
+      "src": "^/event-ticket-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/event-ticket-qr-code.html"
+    },
+    {
+      "src": "^/google-maps-location-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/google-maps-location-qr-code.html"
+    },
+    {
+      "src": "^/google-form-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/google-form-qr-code.html"
+    },
+    {
+      "src": "^/portfolio-resume-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/portfolio-resume-qr-code.html"
+    },
+    {
+      "src": "^/email-sms-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/email-sms-qr-code.html"
+    },
+    {
+      "src": "^/url-to-qr-code$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/url-to-qr-code.html"
+    },
+    {
+      "src": "^/offline-private-qr-generator$",
+      "has": [{ "type": "host", "value": "qr.syntraforge.me" }],
+      "dest": "/qr/offline-private-qr-generator.html"
+    },
+    {
+      "src": "^/mp3-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/mp3-cutter.html"
+    },
+    {
+      "src": "^/wav-trimmer$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/wav-trimmer.html"
+    },
+    {
+      "src": "^/iphone-ringtone-maker$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/iphone-ringtone-maker.html"
+    },
+    {
+      "src": "^/m4a-audio-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/m4a-audio-cutter.html"
+    },
+    {
+      "src": "^/podcast-intro-trimmer$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/podcast-intro-trimmer.html"
+    },
+    {
+      "src": "^/fade-in-out-mp3$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/fade-in-out-mp3.html"
+    },
+    {
+      "src": "^/tiktok-sound-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/tiktok-sound-cutter.html"
+    },
+    {
+      "src": "^/remove-audio-silence$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/remove-audio-silence.html"
+    },
+    {
+      "src": "^/ogg-audio-trimmer$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/ogg-audio-trimmer.html"
+    },
+    {
+      "src": "^/voice-memo-cropper$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/voice-memo-cropper.html"
+    },
+    {
+      "src": "^/discord-soundboard-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/discord-soundboard-cutter.html"
+    },
+    {
+      "src": "^/dj-loop-sample-trimmer$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/dj-loop-sample-trimmer.html"
+    },
+    {
+      "src": "^/youtube-shorts-audio-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/youtube-shorts-audio-cutter.html"
+    },
+    {
+      "src": "^/zoom-recording-audio-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/zoom-recording-audio-cutter.html"
+    },
+    {
+      "src": "^/audiobook-chapter-clipper$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/audiobook-chapter-clipper.html"
+    },
+    {
+      "src": "^/alarm-tone-maker$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/alarm-tone-maker.html"
+    },
+    {
+      "src": "^/sfx-audio-trimmer$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/sfx-audio-trimmer.html"
+    },
+    {
+      "src": "^/no-upload-audio-cutter$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/no-upload-audio-cutter.html"
+    },
+    {
+      "src": "^/waveform-mp3-editor$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/waveform-mp3-editor.html"
+    },
+    {
+      "src": "^/obs-stream-audio-clipper$",
+      "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
+      "dest": "/audio/obs-stream-audio-clipper.html"
+    },
+    {
       "handle": "filesystem"
     }
   ]
