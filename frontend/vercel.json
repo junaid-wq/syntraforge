@@ -435,6 +435,10 @@
       "has": [{ "type": "host", "value": "audio.syntraforge.me" }],
       "dest": "/audio/obs-stream-audio-clipper.html"
     },
+        {
+      "src": "^/(about|contact|privacy|terms)$",
+      "dest": "/$1.html"
+    },
     {
       "handle": "filesystem"
     }
