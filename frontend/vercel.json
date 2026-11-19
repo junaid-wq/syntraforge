@@ -333,6 +333,16 @@
                        "dest":  "/compress/compress-under-100kb.html"
                    },
                    {
+                       "src":  "^/compress-jpg-to-50kb$",
+                       "has":  [
+                                   {
+                                       "type":  "host",
+                                       "value":  "image.syntraforge.me"
+                                   }
+                               ],
+                       "dest":  "/compress/compress-jpg-to-50kb.html"
+                   },
+                   {
                        "src":  "^/compress-under-50kb$",
                        "has":  [
                                    {
