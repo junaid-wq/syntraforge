@@ -923,6 +923,20 @@
                        "dest":  "/$1.html"
                    },
                    {
+                       "src":  "^/$",
+                       "has":  [
+                                   {
+                                       "type":  "host",
+                                       "value":  "frame.syntraforge.me"
+                                   }
+                               ],
+                       "dest":  "/frame/index.html"
+                   },
+                   {
+                       "src":  "^/guides/(image-compression-guide|vector-qr-print-guide|video-frame-extraction-guide|browser-audio-editing-guide)$",
+                       "dest":  "/guides/$1.html"
+                   },
+                   {
                        "handle":  "filesystem"
                    }
                ]
