@@ -9,6 +9,32 @@
                                ],
                        "status":  308,
                        "headers":  {
+                                       "Location":  "https://image.syntraforge.me/"
+                                   },
+                       "src":  "^/compress$"
+                   },
+                   {
+                       "has":  [
+                                   {
+                                       "value":  "syntraforge.me",
+                                       "type":  "host"
+                                   }
+                               ],
+                       "status":  308,
+                       "headers":  {
+                                       "Location":  "https://image.syntraforge.me/$1"
+                                   },
+                       "src":  "^/compress/(.*)$"
+                   },
+                   {
+                       "has":  [
+                                   {
+                                       "value":  "syntraforge.me",
+                                       "type":  "host"
+                                   }
+                               ],
+                       "status":  308,
+                       "headers":  {
                                        "Location":  "https://frame.syntraforge.me/$1"
                                    },
                        "src":  "^/frame(?:/(.*))?$"
@@ -321,46 +347,6 @@
                                    }
                                ],
                        "dest":  "/p-frame-premiere-reference-still-grabber.html"
-                   },
-                   {
-                       "src":  "^/compress-under-100kb$",
-                       "has":  [
-                                   {
-                                       "type":  "host",
-                                       "value":  "image.syntraforge.me"
-                                   }
-                               ],
-                       "dest":  "/compress/compress-under-100kb.html"
-                   },
-                   {
-                       "src":  "^/compress-jpg-to-50kb$",
-                       "has":  [
-                                   {
-                                       "type":  "host",
-                                       "value":  "image.syntraforge.me"
-                                   }
-                               ],
-                       "dest":  "/compress/compress-jpg-to-50kb.html"
-                   },
-                   {
-                       "src":  "^/compress-under-50kb$",
-                       "has":  [
-                                   {
-                                       "type":  "host",
-                                       "value":  "image.syntraforge.me"
-                                   }
-                               ],
-                       "dest":  "/compress/compress-under-50kb.html"
-                   },
-                   {
-                       "src":  "^/compress-under-20kb$",
-                       "has":  [
-                                   {
-                                       "type":  "host",
-                                       "value":  "image.syntraforge.me"
-                                   }
-                               ],
-                       "dest":  "/compress/compress-under-20kb.html"
                    },
                    {
                        "src":  "^/png-to-webp$",
