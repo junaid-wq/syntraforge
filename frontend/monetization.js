@@ -27,7 +27,7 @@
       title: "Generate Ultra-Realistic AI Voiceovers & Dubs",
       desc: "Pair your trimmed audio clips with studio-quality voice cloning and multilingual AI narration.",
       cta: "Try ElevenLabs Free →",
-      url: "https://elevenlabs.io/"
+      url: "https://try.elevenlabs.io/je92now53xlw"
     }
   };
 
