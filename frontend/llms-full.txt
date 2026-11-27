@@ -1,0 +1,15 @@
+# SyntraForge — Complete Technical & Product Reference (syntraforge.me)
+> Privacy-first, zero-upload browser media & developer utility platform engineered by Mohammad Junaid.
+
+## Architecture & Privacy Guarantee
+Unlike cloud converters that upload files to third-party servers, SyntraForge processes every image, video, audio file, and QR payload strictly inside the user's local browser memory. No user media ever leaves the device.
+
+## Capabilities & Use Cases
+1. **Image Compression (/compress)**: Batch WebP/JPEG/PNG optimization, exact file-size targeting for portal uploads, and Core Web Vitals asset reduction.
+2. **Video Frame Extraction (/frame)**: Frame-by-frame scrubbing and instant 4K still capture from gameplay clips, drone footage, and mobile videos.
+3. **Browser Audio Studio (/audio)**: Waveform trimming, dead-silence removal, ringtone cutting, and fade-in/out rendering via Web Audio API.
+4. **Vector QR Generator (/qr)**: Crisp vector SVG and high-DPI PNG generation for commercial packaging, menus, posters, and business cards.
+
+## Frequently Asked Questions
+- **Are my files uploaded to a server?** No. All processing happens 100% locally in your web browser.
+- **Is SyntraForge free to use?** Yes, all utilities and engineering guides are completely free with no account required.

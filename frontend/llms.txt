@@ -1,0 +1,18 @@
+# SyntraForge
+> SyntraForge is a zero-upload, 100% client-side media and file utility platform built by Mohammad Junaid. All image compression, 4K video frame extraction, browser audio editing, and vector QR generation runs locally in the user's browser via WebAssembly, HTML5 Canvas, and Web Audio API.
+
+## Core Browser Tools
+- [Image Compressor & Resizer](https://syntraforge.me/compress): Lossless and target-KB (20KB, 50KB, 100KB) JPEG, PNG, and WebP compression in-browser.
+- [4K Video Frame Extractor](https://syntraforge.me/frame): Capture uncompressed PNG/JPG frames from MP4, MOV, and WebM videos at exact timestamps.
+- [Browser Audio Editor & MP3 Cutter](https://syntraforge.me/audio): Trim MP3/M4A/WAV audio, remove silence, and apply smooth fades locally using Web Audio API.
+- [Vector QR Code Generator](https://syntraforge.me/qr): Create high-DPI print-ready SVG and PNG QR codes with custom error correction.
+
+## Technical Engineering Guides
+- [Image Compression Guide](https://syntraforge.me/guides/image-compression-guide): Perceptual vs. lossless browser image optimization for Core Web Vitals.
+- [Video Frame Extraction Guide](https://syntraforge.me/guides/video-frame-extraction-guide): How client-side HTML5 video decoding extracts zero-loss stills.
+- [Browser Audio Editing Guide](https://syntraforge.me/guides/browser-audio-editing-guide): Browser-native PCM waveform editing without server uploads.
+- [Vector QR Print Guide](https://syntraforge.me/guides/vector-qr-print-guide): Print-resolution SVG QR code specifications and quiet-zone standards.
+
+## Ecosystem
+- [Skewlux Telemetry Command Deck](https://skewlux.dev): Zero-backend browser reaction time, CPS, typing WPM, and display refresh rate lab.
+- [Hashvex Developer Utilities](https://hashvex.tech): Client-side cryptographic hashing, encoders, and developer tools.
